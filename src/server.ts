@@ -1,35 +1,33 @@
-// import express from "express";
-// import connectDB from "@/config/db";
-// import Router from "@/routes/index";
-// import "@/models/bookModel"; 
-
-// const app = express();
-
-// app.use(express.json());
-
-// app.use(express.urlencoded({ extended: true }));
-
-// app.use("/api", Router);
-
-// connectDB()
-//   .then(() => console.log("Database connected"))
-//   .catch((err) => console.error("Database connection failed:", err));
-
-// const PORT = process.env.PORT;
-
-// app.listen(PORT, () => {
-//   console.log(`✅ Server running on http://localhost:${PORT}`);
-// });
-
 import express from "express";
-const app = express();
-const port = "8000";
+import connectDB from "@/config/db";
+import Router from "@/routes/index";
+import { errorHandler } from "@/middleware/errorHandler";
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-  console.log("Response sent");
+const app = express();
+
+// === Middleware ===
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// === Routes ===
+app.use("/api", Router);
+
+// === 404 handler for unknown routes ===
+app.use((req, res, next) => {
+  const error = new Error("Route not found");
+  (error as any).statusCode = 404;
+  next(error); // forward to error middleware
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+// === Error-handling middleware (must be LAST) ===
+app.use(errorHandler);
+
+// === Connect to DB and start server ===
+connectDB()
+  .then(() => console.log("Database connected"))
+  .catch((err) => console.error("Database connection failed:", err));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
