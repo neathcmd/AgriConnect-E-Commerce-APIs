@@ -28,7 +28,6 @@ export const errorHandler = (
 
     // Send error response
     const response = Object.freeze({
-        success: false,
         status: statusCode,
         message,
         stack: process.env.NODE_ENV === "development" ? (err as ApiErrorType)?.stack : undefined,
