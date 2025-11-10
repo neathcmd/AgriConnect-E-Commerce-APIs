@@ -1,0 +1,50 @@
+[
+  {
+    "full_name": "Sok Dara",
+    "user_name": "dara_sok",
+    "email": "dara.sok@example.com",
+    "password": "Pass@12345",
+    "phone": "098123456",
+    "role": "user"
+  },
+  {
+    "full_name": "Chan Leakena",
+    "user_name": "leakena_chan",
+    "email": "leakena.chan@example.com",
+    "password": "StrongPass!88",
+    "phone": "097654321",
+    "role": "admin"
+  },
+  {
+    "full_name": "Kim Rathana",
+    "user_name": "rathana_kim",
+    "email": "rathana.kim@example.com",
+    "password": "Secure#2024",
+    "phone": "093112233",
+    "role": "user"
+  },
+  {
+    "full_name": "Ly Sreyna",
+    "user_name": "sreyna_ly",
+    "email": "sreyna.ly@example.com",
+    "password": "MyPassword$55",
+    "phone": "088991122",
+    "role": "user"
+  },
+  {
+    "full_name": "Pich Vuthy",
+    "user_name": "vuthy_pich",
+    "email": "vuthy.pich@example.com",
+    "password": "Admin!999",
+    "phone": "081773344",
+    "role": "admin"
+  },
+  {
+    "full_name": "Keo Monita",
+    "user_name": "monita_keo",
+    "email": "monita.keo@example.com",
+    "password": "PassWord@777",
+    "phone": "010556677",
+    "role": "user"
+  }
+]
