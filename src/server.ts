@@ -2,12 +2,16 @@ import express from "express";
 import connectDB from "@/config/db";
 import Router from "@/routes/index";
 import { errorHandler } from "@/middleware/errorHandler";
+import { setupSwagger } from "@/config/swagger";
 
 const app = express();
 
 // === Middleware ===
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Swagger Doc
+setupSwagger(app);
 
 // === Routes ===
 app.use("/api", Router);

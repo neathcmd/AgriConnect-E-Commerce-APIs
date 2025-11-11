@@ -1,17 +1,11 @@
 import mongoose, { Types, Schema, Document } from "mongoose";
 import { IUser } from "@/types/user-type";
 
-export type UserRole = "admin" | "farmer" | "user";
-
 export interface IUserModel extends IUser, Document {
   _id: Types.ObjectId;
-  full_name: string;
-  user_name: string;
-  phone: string;
-  email: string;
-  password: string;
-  role: UserRole;
+  // status: boolean;
   accessToken: string;
+   
 }
 
 const userSchema: Schema = new Schema<IUserModel>(
@@ -23,10 +17,11 @@ const userSchema: Schema = new Schema<IUserModel>(
     password: { type: String, required: true },
     role: { 
       type: String,
-      enum: ["admin", "user"],
-      default: "user",
+      enum: ["admin", "farmer", "customer"],
+      default: "farmer",
       required: true
     },
+    // status: { type: Boolean },
     accessToken: { type: String },
   },
   {
