@@ -1,138 +1,168 @@
-import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-// import { handleError } from "@/utils/response-util";
-import { UserModel } from "@/models/user-model";
-import { generateTokens } from "@/utils/token/jwt";  // Adjust the import path as needed
-// import { tokenPayload } from "@/types/auth-type";
-import { badRequestError, databaseError, notFoundError } from "@/utils/helper/error-helper";
 import jwt from "jsonwebtoken";
+import { UserModel } from "@/models/user-model";
+import { generateTokens } from "@/utils/token/jwt";
+import { UserPayload } from "@/types/user-type";
+import { 
+    badRequestError, 
+    notFoundError, 
+    databaseError, 
+    unauthorizedError
+} from "@/utils/helper/error-helper";
 
-// Register service
-export const registerService = async (req: Request, res: Response) => {
+type JwtDecoded = { _id: string };
+
+/**
+ * Refresh tokens: verify incoming refresh token, ensure it matches DB,
+ * generate new tokens and rotate the stored refresh token.
+ */
+export const refreshTokenService = async (refreshToken: string) => {
     try {
-        const { full_name, user_name, email, phone, password, role } = req.body;
-
-        // Check if user already exists
-        const existUser = await UserModel.findOne({ user_name , email });
-        if (existUser) {
-            throw badRequestError("User with this email or username already exists.")
+        if (!refreshToken) {
+            throw notFoundError("NO REFRESH TOKEN FOUND.");
         }
 
-        // Hash the password
+        const decoded = jwt.verify(
+            refreshToken,
+            process.env.JWT_REFRESH_SECRET as string
+        ) as JwtDecoded;
+
+        const user = await UserModel.findById(decoded._id);
+        if (!user || user.refreshToken !== refreshToken) {
+            throw unauthorizedError("INVALID REFRESH TOKEN.");
+        }
+
+        // rotate tokens
+        const tokens = generateTokens({
+            _id: user._id.toString(),
+            email: user.email,
+            role: user.role,
+        });
+
+        user.refreshToken = tokens.refreshToken;
+        await user.save();
+
+        return tokens;
+
+    } catch (err: any) {
+        console.error("refreshTokenService error:", err);
+        // If it's a JWT verification error, surface as unauthorized
+        if (err.name === "TokenExpiredError" || err.name === "JsonWebTokenError") {
+            throw unauthorizedError("INVALID OR EXPIRED REFRESH TOKEN.");
+        }
+        throw databaseError("REFRESH TOKEN ERROR.");
+    }
+}
+
+
+/**
+ * Register a new user, hash password, store refresh token, return user (without sensitive fields) and tokens
+ */
+export const registerService = async (data: UserPayload) => {
+    try {
+        const { full_name, user_name, email, phone, password } = data;
+
+        const existUser = await UserModel.findOne({
+            $or: [{ user_name }, { email }],
+        });
+
+        if (existUser) {
+            throw badRequestError("USER WITH THIS USERNAME OR EMAIL ALREADY EXIST.");
+        }
+
         const hashed = await bcrypt.hash(password, 12);
 
-        // Create a new user
         const newUser = await UserModel.create({
             full_name,
             user_name,
             email,
             phone,
             password: hashed,
-            role: role || "farmer"
         });
 
-        // Generate JWT tokens
         const tokens = generateTokens({
             _id: newUser._id.toString(),
             email: newUser.email,
-            role: newUser.role
+            role: newUser.role,
         });
 
-        // Set cookies for refresh tokens
-        res.cookie("refreshToken", tokens.refreshToken, {
-            httpOnly: true,  // Prevents JavaScript from accessing cookie
-            secure: process.env.NODE_ENV === "development", // Use secure cookies in development
-            // secure: process.env.NODE_ENV === "production",  // Use secure cookies in production
-            sameSite: "strict",  // CSRF protection
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        });
+        newUser.refreshToken = tokens.refreshToken;
+        await newUser.save();
 
-        // Set cookies for access Token
-        res.cookie("accessToken", tokens.accessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "development",
-            // secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 15 * 60 * 1000 // 15 minutes
-        })
+        const userObj = newUser.toObject();
+        // remove sensitive fields
+        // delete userObj.password;
+        // delete userObj.refreshToken;
 
-        // Respond with new user data and access token
-        const { password: _, ...userData } = newUser.toObject(); // Exclude password
-        return res.status(201).json({
-            message: "User registered successfully.",
-            user: userData,
-            accessToken: tokens.accessToken // Expose access token
-        });
+        return { user: userObj };
 
-    } catch (error) {
-        console.error("===REGISTER ERROR===", error);
-        throw databaseError("Something went wrong.");
+    } catch (err) {
+        console.error("registerService error:", err);
+        throw databaseError("REGISTRATION ERROR");
     }
 };
 
-// Refresh Token endpoint
-export const refreshTokenService = async (req: Request, res: Response) => {
-    try {
-        const refreshToken = req.cookies.refreshToken;
 
+/**
+ * Login user: validate credentials, rotate refresh token, return user + tokens
+ */
+export const loginService = async (data: UserPayload) => {
+    try {
+        const { user_name, password } = data;
+
+        const existingUser = await UserModel.findOne({ user_name });
+        if (!existingUser) {
+            throw notFoundError("USER NOT FOUND.");
+        }
+
+        const isMatch = await bcrypt.compare(password, existingUser.password);
+        if (!isMatch) {
+            throw unauthorizedError("INVALID USERNAME OR PASSWORD.");
+        }
+
+        const tokens = generateTokens({
+            _id: existingUser._id.toString(),
+            email: existingUser.email,
+            role: existingUser.role,
+        });
+
+        existingUser.refreshToken = tokens.refreshToken;
+        const savedUser = await existingUser.save();
+
+        const userObj = savedUser.toObject();
+        // delete userObj.password;
+        // delete userObj.refreshToken;
+
+        return {
+            tokens,
+            user: userObj,
+        };
+
+    } catch (err) {
+        console.error("loginService error:", err);
+        throw databaseError("LOGIN ERROR.");
+    }
+};
+
+
+/**
+ * Logout: find user by refreshToken and clear it
+ */
+export const logoutService = async (refreshToken: string) => {
+    try {
         if (!refreshToken) {
-            throw notFoundError("No refreshToken was found.")
-        };
+            throw notFoundError("NO TOKEN FOUND.")
+        }
 
-        const decoded = jwt.verify(
-            refreshToken,
-            process.env.JWT_REFRESH_SECRET as string
-        ) as { _id: string };
+        const logoutUser = await UserModel.findOne({ refreshToken });
+        if (!logoutUser) {
+            throw unauthorizedError("INVALID TOKEN.");
+        }
 
-        const user = await UserModel.findById(decoded._id);
-        if (!user || user.refreshToken !== refreshToken) {
-            throw badRequestError("Invalid refresh token.")
-        };
-
-        // Generate new refresh token
-        const { accessToken, refreshToken: newRefreshToken } = generateTokens({
-            _id: user._id.toString(),
-            email: user.email,
-            role: user.role
-        });
-
-        // Update refreshtoken
-        user.refreshToken = newRefreshToken;
-        await user.save();
-
-         // Update cookie
-        res.cookie("refreshToken", newRefreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
-
-        // Send access token
-        res.cookie("accessToken", accessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          maxAge: 15 * 60 * 1000,
-        });
-
-        return res.status(200).json({
-          success: true,
-          accessToken,
-        });
-        
-    } catch (error) {
-        console.error("===REFRESH TOKEN ERROR===", error);
-        throw databaseError("Something went wrong,")
+        logoutUser.refreshToken = "";
+        await logoutUser.save();
+    } catch (err) {
+        console.error("logoutService error:", err);
+        throw databaseError("LOGOUT ERROR");
     }
 };
-
-// Login service
-export const loginService = async (req: Request, res: Response) => {
-    try {
-        // Your code here
-    } catch (error) {
-        console.error("===LOGIN ERROR===", error)
-        // Your code here
-    }
-}

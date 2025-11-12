@@ -1,5 +1,10 @@
 // src/server.ts
+import dotenv from "dotenv";
+dotenv.config(); // <<-- MUST be before other imports that use process.env
+
 import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import connectDB from "@/config/db";
 import Router from "@/routes/index";
 import { errorHandler } from "@/middleware/errorHandler";
@@ -10,6 +15,14 @@ const app = express();
 // === Middleware ===
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// CORS — allow credentials for cookies
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN ?? "http://localhost:5173";
+app.use(cors({
+  origin: FRONTEND_ORIGIN, // accept requests from your frontend
+  credentials: true, // allow cookies
+}));
 
 // === Swagger Docs ===
 setupSwagger(app);
