@@ -1,8 +1,76 @@
 import { Request, Response } from "express";
-import { registerService } from "@/services/auth-service";
+import {
+  registerService,
+  loginService,
+  refreshTokenService,
+  logoutService,
+} from "@/services/auth-service";
+import { handleControllerError } from "@/utils/helper/controller-error-handler";
+import { setAuthCookies, clearAuthCookies } from "@/utils/helper/cookies";
 
-// Register controller
 export const registerController = async (req: Request, res: Response) => {
-    const registerResult = await registerService(req, res);
-    return registerResult;
+    try {
+        const result = await registerService(req.body);
+        const user = (result as any).user ?? result;
+        const tokens = (result as any).tokens;
+
+        if (tokens) {
+            setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+        }
+
+        res.status(201).json({
+            message: "User registered successfully.",
+            user,
+            // ...(tokens ? { accessToken: tokens.accessToken } : {}),
+        });
+    } catch (err) {
+        handleControllerError(res, err);
+    }
+};
+
+export const loginController = async (req: Request, res: Response) => {
+    try {
+        const { user, tokens } = await loginService(req.body);
+
+        setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+
+        res.status(200).json({
+            message: "Login successful.",
+            user,
+            accessToken: tokens.accessToken, // it's fine to include for convenience
+        });
+    } catch (err) {
+      handleControllerError(res, err);
+    }
+};
+
+export const refreshTokenController = async (req: Request, res: Response) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        const tokens = await refreshTokenService(refreshToken);
+
+        setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+
+        res.status(200).json({
+            message: "Access token refreshed.",
+            accessToken: tokens.accessToken,
+        });
+    } catch (err) {
+      handleControllerError(res, err);
+    }
+};
+
+export const logoutController = async (req: Request, res: Response) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        await logoutService(refreshToken);
+
+        clearAuthCookies(res);
+
+        res.status(200).json({
+            message: "Logged out successfully.",
+        });
+    } catch (err) {
+      handleControllerError(res, err);
+    }
 };

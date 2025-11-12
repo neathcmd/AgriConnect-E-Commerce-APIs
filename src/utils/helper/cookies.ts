@@ -1,31 +1,33 @@
 import { Response } from "express";
-import path from "path";
 
-export const accessTokenCookieOption = {
-    httpOnly: true,
-    // secure: process.env.NODE_ENV === "production",
-    secure: process.env.NODE_ENV === "development",
-    sameSite: "lax" as "lax" | "strict"| "none",
-    maxAge: 15 * 60* 1000,
-    path: "/",
-}
+const isProd = process.env.NODE_ENV === "production";
 
-export const refreshTokenCookieOption = {
-    httpOnly: true,
-    // secure: process.env.NODE_ENV === "production",
-    secure: process.env.NODE_ENV === "development",
-    sameSite: "lax" as "lax" | "strict"| "none",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    path: "/",
-}
+/**
+ * cookieOptions is used as base for both tokens.
+ *
+ * - In production: secure=true and sameSite='none' (for cross-site cookies over HTTPS).
+ * - In development: secure=false and sameSite='lax' (works for localhost).
+ */
+export const cookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" as "none" : "lax" as "lax", // types
+  path: "/",
+};
 
 export const setAuthCookies = (res: Response, accessToken: string, refreshToken: string) => {
-    res.cookie("accessToken", accessToken, accessTokenCookieOption);
-    res.cookie("refreshToken", refreshToken, refreshTokenCookieOption);
-}
+  res.cookie("accessToken", accessToken, {
+    ...cookieOptions,
+    maxAge: 15 * 60 * 1000, // 15 minutes
+  });
+  res.cookie("refreshToken", refreshToken, {
+    ...cookieOptions,
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
+};
 
 export const clearAuthCookies = (res: Response) => {
-    res.clearCookie("accessToken", {path: "/"});
-    res.clearCookie("refreshToken", {path: "/"});
-}
-
+  // Use same cookieOptions when clearing to ensure browser finds the cookies
+  res.clearCookie("accessToken", cookieOptions);
+  res.clearCookie("refreshToken", cookieOptions);
+};

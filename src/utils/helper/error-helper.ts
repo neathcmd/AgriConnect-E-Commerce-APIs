@@ -6,7 +6,7 @@ export const badRequestError = (message = "Bad request") => {
 
 export const unauthorizedError = (message = "Unauthorized access") => {
     return throwError(401, message);
-};
+};  
 
 export const forbiddenError = (message = "Forbidden action") => {
     return throwError(403, message);

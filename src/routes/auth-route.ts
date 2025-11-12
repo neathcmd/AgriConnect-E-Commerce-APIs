@@ -1,6 +1,11 @@
 // src/routes/auth-route.ts
 import { Router } from "express";
-import { registerController } from "@/controllers/auth-controller";
+import {
+  registerController,
+  loginController,
+  refreshTokenController,
+  logoutController,
+} from "@/controllers/auth-controller";
 
 const AuthRouter = Router();
 
@@ -20,25 +25,68 @@ const AuthRouter = Router();
  *             properties:
  *               full_name:
  *                 type: string
- *                 example: jonh cina
- *               user_name: 
+ *               user_name:
  *                 type: string
- *                 example: jonh
- *               phone: 
- *                 type: string,
- *                 example: "000000000"
+ *               phone:
+ *                 type: string
  *               email:
  *                 type: string
- *                 example: test@example.com
  *               password:
  *                 type: string
- *                 example: "password123"
  *     responses:
  *       201:
  *         description: User registered successfully
- *       400:
- *         description: Bad request
  */
 AuthRouter.post("/register", registerController);
+
+/**
+ * @openapi
+ * /api/auth/login:
+ *   post:
+ *     summary: Login an existing user
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_name:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ */
+AuthRouter.post("/login", loginController);
+
+/**
+ * @openapi
+ * /api/auth/refresh:
+ *   post:
+ *     summary: Refresh access token using refresh token cookie
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Access token refreshed
+ */
+AuthRouter.post("/refresh", refreshTokenController);
+
+/**
+ * @openapi
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout user and clear tokens
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
+ */
+AuthRouter.post("/logout", logoutController);
 
 export default AuthRouter;

@@ -10,7 +10,7 @@ export interface IUser {
     role: UserRole,
 }
 
-export type UserPayload = {
+export interface UserPayload {
     full_name: string,
     user_name: string,
     phone: string,
