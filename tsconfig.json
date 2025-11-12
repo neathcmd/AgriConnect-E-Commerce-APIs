@@ -20,6 +20,9 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*"],
+   "include": [
+    "src/swagger-output.json",
+    "src/**/*"
+  ],
   "exclude": ["node_modules"]
 }

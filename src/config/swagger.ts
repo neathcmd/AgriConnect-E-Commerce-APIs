@@ -13,16 +13,25 @@ const options = {
     servers: [
       {
         url: "http://localhost:8000",
+        description: "Local server",
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
-  // Adjust paths to your route files
-  apis: ["./src/routes/*.ts"], 
+  // Path to your route files for JSDoc comments
+  apis: ["./src/routes/*.ts"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
-// Helper to setup Swagger
 export const setupSwagger = (app: Express) => {
   app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 };

@@ -5,6 +5,7 @@ export interface IUserModel extends IUser, Document {
   _id: Types.ObjectId;
   // status: boolean;
   accessToken: string;
+  refreshToken: string;
    
 }
 
