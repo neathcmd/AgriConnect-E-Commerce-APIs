@@ -4,9 +4,18 @@ import { notFoundError, databaseError } from "@/utils/helper/error-helper";
 import { IUser } from "@/types/user-type";
 import { handleSuccess } from "@/utils/response-util";
 
-// Get all users service:
-// This function queries the database to retrieve all user records
-// and returns them to the client through the controller.
+
+
+/**
+ * Create user service
+ */
+export const createUserService = async () => {
+    // code here
+}
+
+/**
+ * Get all users service
+ */
 export const getAllUsersService = async () => {
     try {
         const fetchUser  = await UserModel.find<IUser>();
@@ -21,9 +30,9 @@ export const getAllUsersService = async () => {
     }
 };
 
-// Get users by Id
-// This function queries the database to retriave user with the id from req params
-// and return the data to the client through controller.
+/**
+ * Get user by ID service
+ */
 export const getUsersByIdService = async (req: Request, _res: Response) => {
   try {
     const { id } = req.params;
@@ -35,16 +44,13 @@ export const getUsersByIdService = async (req: Request, _res: Response) => {
 
     return user;
   } catch (error) {
-    console.error("getUsersByIdService error:", error);
+    console.error("getUsersByIdService error:", error); 
     throw databaseError("ERROR FETCHING USER BY ID");
   }
 };
 
 /**
  * Update user by ID
- * This function queries the database to retrieve a user's current data using their unique ID.
- * It then updates the user's information with the new data provided.
- * Finally, it returns the updated user data.
  */
 export const updateUserByIdService = async (req: Request, _res: Response) => {
     try {
@@ -67,9 +73,9 @@ export const updateUserByIdService = async (req: Request, _res: Response) => {
     }
 };
 
-/*
- * Delete user service
- */ 
+/**
+ * Delete user by Id
+ */
 export const deleteUserByIdService = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -86,3 +92,11 @@ export const deleteUserByIdService = async (req: Request, res: Response) => {
         throw databaseError("FAILED TO DELETE USER.")
     }
 };
+
+
+/**
+ * Get me service
+ */
+export const getMeService = async () => {
+    // code here
+}

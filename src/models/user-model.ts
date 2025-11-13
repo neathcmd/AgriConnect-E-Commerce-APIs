@@ -19,10 +19,10 @@ const userSchema: Schema = new Schema<IUserModel>(
     phone: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: true },
-    role: { 
+    roles: { 
       type: String,
-      enum: ["admin", "farmer", "customer"],
-      default: "farmer",
+      enum: ["ADMIN", "FARMER", "CUSTOMER"],
+      default: "CUSTOMER",
       required: true
     },
     // status: { type: Boolean },

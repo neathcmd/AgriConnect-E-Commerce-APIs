@@ -8,7 +8,7 @@ import {
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
 import { handleSuccess, handleError } from "@/utils/response-util";
 
-// Get all user controller
+
 export const getAllUsersController = async (_req: Request, res: Response) => {
     try {
         const userData = await getAllUsersService();
@@ -21,7 +21,6 @@ export const getAllUsersController = async (_req: Request, res: Response) => {
     }
 }
 
-// Get user by ID
 export const getUserByIdController = async (req: Request, res: Response) => {
   try {
     const user = await getUsersByIdService(req, res);
@@ -33,7 +32,6 @@ export const getUserByIdController = async (req: Request, res: Response) => {
   }
 };
 
-// Update user by id
 export const updateUserByIdController = async (req: Request, res: Response) => {
     try {
         const updateUser = await updateUserByIdService(req, res);
