@@ -9,6 +9,9 @@ export interface IUserModel extends IUser, Document {
    
 }
 
+// Refactor User Role System (Multi-Role Support): 
+// Allow each user to have multiple roles (e.g., ["farmer", "customer"]) instead of a single one.
+
 const userSchema: Schema = new Schema<IUserModel>(
   {
     full_name: { type: String, required: true },
