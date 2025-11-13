@@ -60,17 +60,8 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     }
 };
 
+
 export const logoutController = async (req: Request, res: Response) => {
-    try {
-        const refreshToken = req.cookies.refreshToken;
-        await logoutService(refreshToken);
-
-        clearAuthCookies(res);
-
-        res.status(200).json({
-            message: "Logged out successfully.",
-        });
-    } catch (err) {
-      handleControllerError(res, err);
-    }
+    const result = await logoutService(req, res);
+    return result;
 };

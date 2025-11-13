@@ -1,6 +1,6 @@
 // src/server.ts
 import dotenv from "dotenv";
-dotenv.config(); // <<-- MUST be before other imports that use process.env
+dotenv.config(); 
 
 import express from "express";
 import cookieParser from "cookie-parser";
