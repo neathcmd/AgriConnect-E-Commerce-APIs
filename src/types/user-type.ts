@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "farmer" | "user";
+export type UserRole = "ADMIN" | "FARMER" | "CUSTOMER";
 
 
 export interface IUser {
@@ -7,7 +7,7 @@ export interface IUser {
     phone: string,
     email: string,
     password: string,
-    role: UserRole,
+    roles: UserRole,
 }
 
 export interface UserPayload {
