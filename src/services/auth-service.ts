@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "@/models/user-model";
@@ -9,6 +10,7 @@ import {
     databaseError, 
     unauthorizedError
 } from "@/utils/helper/error-helper";
+import { clearAuthCookies } from "@/utils/helper/cookies";
 
 type JwtDecoded = { _id: string };
 
@@ -129,13 +131,13 @@ export const loginService = async (data: UserPayload) => {
         existingUser.refreshToken = tokens.refreshToken;
         const savedUser = await existingUser.save();
 
-        const userObj = savedUser.toObject();
+        // const userObj = savedUser.toObject();
         // delete userObj.password;
         // delete userObj.refreshToken;
 
         return {
             tokens,
-            user: userObj,
+            user: savedUser,
         };
 
     } catch (err) {
@@ -146,23 +148,25 @@ export const loginService = async (data: UserPayload) => {
 
 
 /**
- * Logout: find user by refreshToken and clear it
+ * Logout: clear both refreshToken and accessToken from cookie and response a success message
  */
-export const logoutService = async (refreshToken: string) => {
-    try {
-        if (!refreshToken) {
-            throw notFoundError("NO TOKEN FOUND.")
-        }
+export const logoutService = async (_req: Request, res: Response) => {
+  try {
+    // Clear cookies
+    clearAuthCookies(res);
 
-        const logoutUser = await UserModel.findOne({ refreshToken });
-        if (!logoutUser) {
-            throw unauthorizedError("INVALID TOKEN.");
-        }
-
-        logoutUser.refreshToken = "";
-        await logoutUser.save();
-    } catch (err) {
-        console.error("logoutService error:", err);
-        throw databaseError("LOGOUT ERROR");
-    }
+    return res.status(200).json({
+      message: "USER LOGOUT SUCCESSFULLY.",
+    });
+  } catch (err) {
+    console.error("logoutService error:", err);
+    return res.status(500).json({ message: "LOGOUT ERROR" });
+  }
 };
+
+/**
+ * Remove account: find user in the database and remove the user 
+ */
+export const removeMyAccountService = async () => {
+    // code 
+}

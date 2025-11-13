@@ -33,7 +33,7 @@ export const authorizeRole = (...allowedRoles: string[]) => {
     const sanitizedRoles = prepareRoles(allowedRoles);
 
     return (req: Request, res: Response, next: NextFunction) => {
-        try {
+        try {             
             // Zero trust — never trust req.user fully
             const user = req.user;
 
