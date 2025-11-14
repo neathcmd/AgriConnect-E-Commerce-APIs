@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { authenticateToken } from "@/middleware/authenticateToken";
+import { authorizeRole } from "@/middleware/authorizeRole";
 import { getAllUsersController, updateUserByIdController } from "@/controllers/user-controller";
 
 const UserRouter = Router();
@@ -20,7 +22,11 @@ const UserRouter = Router();
  *               items:
  *                 type: object
  */
-UserRouter.get("/users", getAllUsersController);
+UserRouter.get("/users",
+    authenticateToken,
+    authorizeRole("ADMIN"),
+    getAllUsersController
+);
 
 
 UserRouter.put("/users/:id", updateUserByIdController)

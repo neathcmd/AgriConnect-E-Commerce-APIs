@@ -1,16 +1,17 @@
 import mongoose, { Types, Schema, Document } from "mongoose";
 import { IUser } from "@/types/user-type";
+import { UserRole } from "@/types/user-type";
+
+export type UserStatus = "ACTIVE" | "INACTIVE";
 
 export interface IUserModel extends IUser, Document {
   _id: Types.ObjectId;
-  // status: boolean;
+  status: UserStatus;
   accessToken: string;
   refreshToken: string;
+  role: UserRole;
    
 }
-
-// Refactor User Role System (Multi-Role Support): 
-// Allow each user to have multiple roles (e.g., ["farmer", "customer"]) instead of a single one.
 
 const userSchema: Schema = new Schema<IUserModel>(
   {
@@ -19,18 +20,21 @@ const userSchema: Schema = new Schema<IUserModel>(
     phone: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: true },
-    roles: { 
+    role: {
       type: String,
       enum: ["ADMIN", "FARMER", "CUSTOMER"],
       default: "CUSTOMER",
       required: true
     },
-    // status: { type: Boolean },
+    status: {
+      type: String,
+      enum: ["ACTIVE", "INACTIVE"],
+      default: "ACTIVE",
+      required: true
+    },
     accessToken: { type: String },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export const UserModel = mongoose.model<IUserModel>("User", userSchema);
