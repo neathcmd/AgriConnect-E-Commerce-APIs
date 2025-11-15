@@ -1,0 +1,242 @@
+[
+  {
+    "full_name": "Sok Vanna",
+    "user_name": "vanna_sok",
+    "email": "vanna.sok@example.com",
+    "password": "FarmerPass@101",
+    "phone": "096112233",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Heng Sovath",
+    "user_name": "sovath_heng",
+    "email": "sovath.heng@example.com",
+    "password": "Sovath#Farm22",
+    "phone": "092445566",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Bun Ravy",
+    "user_name": "ravy_bun",
+    "email": "ravy.bun@example.com",
+    "password": "RavySecure$33",
+    "phone": "089667788",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Chhoun Sopheap",
+    "user_name": "sopheap_chhoun",
+    "email": "sopheap.chhoun@example.com",
+    "password": "HeapPass!44",
+    "phone": "070889900",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Meas Chantha",
+    "user_name": "chantha_meas",
+    "email": "chantha.meas@example.com",
+    "password": "Chantha@55",
+    "phone": "085223344",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Ouk Sopheaktra",
+    "user_name": "sopheaktra_ouk",
+    "email": "sopheaktra.ouk@example.com",
+    "password": "TraFarm#66",
+    "phone": "091445566",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Ros Vireak",
+    "user_name": "vireak_ros",
+    "email": "vireak.ros@example.com",
+    "password": "VireakPass$77",
+    "phone": "093667788",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Tep Srey Pov",
+    "user_name": "sreypov_tep",
+    "email": "sreypov.tep@example.com",
+    "password": "PovSecure!88",
+    "phone": "088889900",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Yoeun Boromey",
+    "user_name": "boromey_yoeun",
+    "email": "boromey.yoeun@example.com",
+    "password": "BoroPass@99",
+    "phone": "097334455",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Lim Sotheara",
+    "user_name": "sotheara_lim",
+    "email": "sotheara.lim@example.com",
+    "password": "Theara#Farm00",
+    "phone": "081556677",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Sokha Rottana",
+    "user_name": "rottana_sokha",
+    "email": "rottana.sokha@example.com",
+    "password": "Rottana$11",
+    "phone": "010778899",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Phan Sokun",
+    "user_name": "sokun_phan",
+    "email": "sokun.phan@example.com",
+    "password": "SokunPass!22",
+    "phone": "096990011",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Nou Chanvatey",
+    "user_name": "chanvatey_nou",
+    "email": "chanvatey.nou@example.com",
+    "password": "Vatey@Farm33",
+    "phone": "092223344",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Kry Sopheakmongkol",
+    "user_name": "sopheakmongkol_kry",
+    "email": "sopheakmongkol.kry@example.com",
+    "password": "Mongkol#44",
+    "phone": "089445566",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Vann Sreang",
+    "user_name": "sreang_vann",
+    "email": "sreang.vann@example.com",
+    "password": "SreangPass$55",
+    "phone": "070667788",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Chea Vibol",
+    "user_name": "vibol_chea",
+    "email": "vibol.chea@example.com",
+    "password": "VibolSecure!66",
+    "phone": "085889900",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Mao Sreypich",
+    "user_name": "sreypich_mao",
+    "email": "sreypich.mao@example.com",
+    "password": "PichFarm@77",
+    "phone": "091112233",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Soeun Dara",
+    "user_name": "dara_soeun",
+    "email": "dara.soeun@example.com",
+    "password": "DaraPass#88",
+    "phone": "093334455",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Chum Sotheavy",
+    "user_name": "sotheavy_chum",
+    "email": "sotheavy.chum@example.com",
+    "password": "Heavy$99",
+    "phone": "088556677",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Duong Sovannary",
+    "user_name": "sovannary_duong",
+    "email": "sovannary.duong@example.com",
+    "password": "NaryPass!00",
+    "phone": "097778899",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Khun Ratanak",
+    "user_name": "ratanak_khun",
+    "email": "ratanak.khun@example.com",
+    "password": "Ratanak@11",
+    "phone": "081990011",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Prak Sopheakneath",
+    "user_name": "sopheakneath_prak",
+    "email": "sopheakneath.prak@example.com",
+    "password": "Neath#Farm22",
+    "phone": "010223344",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Seng Leaksmey",
+    "user_name": "leaksmey_seng",
+    "email": "leaksmey.seng@example.com",
+    "password": "SmeyPass$33",
+    "phone": "096445566",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Thach Srey Mom",
+    "user_name": "sreymom_thach",
+    "email": "sreymom.thach@example.com",
+    "password": "MomSecure!44",
+    "phone": "092667788",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Uy Chanpisey",
+    "user_name": "chanpisey_uy",
+    "email": "chanpisey.uy@example.com",
+    "password": "PiseyFarm@55",
+    "phone": "089889900",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Nget Sopheakrath",
+    "user_name": "sopheakrath_nget",
+    "email": "sopheakrath.nget@example.com",
+    "password": "RathPass#66",
+    "phone": "070112233",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Heng Sreynit",
+    "user_name": "sreynit_heng",
+    "email": "sreynit.heng@example.com",
+    "password": "Nit$77",
+    "phone": "085334455",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Bun Sopheakvichet",
+    "user_name": "sopheakvichet_bun",
+    "email": "sopheakvichet.bun@example.com",
+    "password": "VichetPass!88",
+    "phone": "091556677",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Chhoun Sovandara",
+    "user_name": "sovandara_chhoun",
+    "email": "sovandara.chhoun@example.com",
+    "password": "Dara@Farm99",
+    "phone": "093778899",
+    "role": "FARMER"
+  },
+  {
+    "full_name": "Meas Sreyleak",
+    "user_name": "sreyleak_meas",
+    "email": "sreyleak.meas@example.com",
+    "password": "LeakSecure#00",
+    "phone": "088990011",
+    "role": "FARMER"
+  }
+]

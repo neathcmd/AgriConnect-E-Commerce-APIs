@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { UserModel } from "../models/user-model";
 import bcrypt from "bcrypt";
 
-async function seedAdmin() {
+const seedAdmin = async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI as string);
         console.log("✅ Database connected");

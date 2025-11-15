@@ -1,0 +1,202 @@
+[
+  {
+    "full_name": "Nget Sovann",
+    "user_name": "sovann_nget",
+    "email": "sovann.nget@example.com",
+    "password": "CustPass!321",
+    "phone": "096887755",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Heng Sophea",
+    "user_name": "sophea_heng",
+    "email": "sophea.heng@example.com",
+    "password": "Secure$2025",
+    "phone": "092334455",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Bun Thida",
+    "user_name": "thida_bun",
+    "email": "thida.bun@example.com",
+    "password": "Pass@Bun77",
+    "phone": "089112233",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Chhoun Sopheak",
+    "user_name": "sopheak_chhoun",
+    "email": "sopheak.chhoun@example.com",
+    "password": "Strong#99",
+    "phone": "070445566",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Meas Chanthou",
+    "user_name": "chanthou_meas",
+    "email": "chanthou.meas@example.com",
+    "password": "MyPass!44",
+    "phone": "085667788",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Ouk Vireak",
+    "user_name": "vireak_ouk",
+    "email": "vireak.ouk@example.com",
+    "password": "PassVireak$22",
+    "phone": "091223344",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Ros Srey",
+    "user_name": "srey_ros",
+    "email": "srey.ros@example.com",
+    "password": "Secure@Ros11",
+    "phone": "093556677",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Tep Boran",
+    "user_name": "boran_tep",
+    "email": "boran.tep@example.com",
+    "password": "BoranPass#33",
+    "phone": "088778899",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Yoeun Sovan",
+    "user_name": "sovan_yoeun",
+    "email": "sovan.yoeun@example.com",
+    "password": "Pass@Sovan66",
+    "phone": "097112233",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Lim Chenda",
+    "user_name": "chenda_lim",
+    "email": "chenda.lim@example.com",
+    "password": "Chenda$88",
+    "phone": "081334455",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Sokha Rithy",
+    "user_name": "rithy_sokha",
+    "email": "rithy.sokha@example.com",
+    "password": "RithyPass!55",
+    "phone": "010667788",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Phan Davy",
+    "user_name": "davy_phan",
+    "email": "davy.phan@example.com",
+    "password": "Davy@2024",
+    "phone": "096889900",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Nou Sreymom",
+    "user_name": "sreymom_nou",
+    "email": "sreymom.nou@example.com",
+    "password": "MomPass#77",
+    "phone": "092445566",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Kry Srey Pich",
+    "user_name": "sreypich_kry",
+    "email": "sreypich.kry@example.com",
+    "password": "Pich$Secure99",
+    "phone": "089667788",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Vann Chhay",
+    "user_name": "chhay_vann",
+    "email": "chhay.vann@example.com",
+    "password": "ChhayPass@11",
+    "phone": "070889900",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Chea Sothea",
+    "user_name": "sothea_chea",
+    "email": "sothea.chea@example.com",
+    "password": "Sothea!22",
+    "phone": "085112233",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Mao Serey",
+    "user_name": "serey_mao",
+    "email": "serey.mao@example.com",
+    "password": "SereyPass$44",
+    "phone": "091334455",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Soeun Vibol",
+    "user_name": "vibol_soeun",
+    "email": "vibol.soeun@example.com",
+    "password": "Vibol#66",
+    "phone": "093556677",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Chum Leak",
+    "user_name": "leak_chum",
+    "email": "leak.chum@example.com",
+    "password": "LeakPass!88",
+    "phone": "088778899",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Duong Sopheara",
+    "user_name": "sopheara_duong",
+    "email": "sopheara.duong@example.com",
+    "password": "Sopheara@00",
+    "phone": "097223344",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Khun Theara",
+    "user_name": "theara_khun",
+    "email": "theara.khun@example.com",
+    "password": "ThearaPass#12",
+    "phone": "081445566",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Prak Sreynoch",
+    "user_name": "sreynoch_prak",
+    "email": "sreynoch.prak@example.com",
+    "password": "Noch$Secure34",
+    "phone": "010667788",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Seng Chantha",
+    "user_name": "chantha_seng",
+    "email": "chantha.seng@example.com",
+    "password": "Chantha!56",
+    "phone": "096889900",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Thach Srey Lin",
+    "user_name": "sreylin_thach",
+    "email": "sreylin.thach@example.com",
+    "password": "LinPass@78",
+    "phone": "092112233",
+    "role": "CUSTOMER"
+  },
+  {
+    "full_name": "Uy Sovanrat",
+    "user_name": "sovanrat_uy",
+    "email": "sovanrat.uy@example.com",
+    "password": "Rat#Pass90",
+    "phone": "089334455",
+    "role": "CUSTOMER"
+  }
+]
