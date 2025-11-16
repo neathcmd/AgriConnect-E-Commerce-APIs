@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { authenticateToken } from "@/middleware/authenticateToken";
 import { authorizeRole } from "@/middleware/authorizeRole";
-import { getAllUsersController, updateUserByIdController } from "@/controllers/user-controller";
+import { 
+    getAllUsersController, 
+    updateUserByIdController,
+    getMeController
+} from "@/controllers/user-controller";
 
 const UserRouter = Router();
 
@@ -30,5 +34,6 @@ UserRouter.get("/users",
 
 
 UserRouter.put("/users/:id", updateUserByIdController)
+UserRouter.get("/profile/me", getMeController)
 
 export default UserRouter;

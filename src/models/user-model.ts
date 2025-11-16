@@ -9,7 +9,7 @@ export interface IUserModel extends IUser, Document {
   status: UserStatus;
   accessToken: string;
   refreshToken: string;
-  role: UserRole;
+  roles: UserRole[];
    
 }
 
@@ -20,10 +20,9 @@ const userSchema: Schema = new Schema<IUserModel>(
     phone: { type: String, required: true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: true },
-    role: {
-      type: String,
-      enum: ["ADMIN", "FARMER", "CUSTOMER"],
-      default: "CUSTOMER",
+    roles: {
+      type: [String],
+      default: ["CUSTOMER"],
       required: true
     },
     status: {

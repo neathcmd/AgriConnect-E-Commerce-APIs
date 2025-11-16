@@ -34,7 +34,7 @@ const seedAdmin = async () => {
             email: EMAIL_ADMIN,
             password: hashedPassword,
             phone: PHONE_ADMIN,
-            role: "ADMIN",
+            roles: ["ADMIN"],
         });
 
         console.log("🎉 Admin user seeded successfully!");
