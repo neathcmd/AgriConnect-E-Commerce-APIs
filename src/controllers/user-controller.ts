@@ -3,7 +3,8 @@ import {
     getAllUsersService, 
     getUsersByIdService, 
     updateUserByIdService, 
-    deleteUserByIdService 
+    deleteUserByIdService,
+    getMeService
 } from "@/services/user-service";
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
 import { handleSuccess, handleError } from "@/utils/response-util";
@@ -46,4 +47,15 @@ export const updateUserByIdController = async (req: Request, res: Response) => {
 export const deleteUserByIdController = async (req: Request, res: Response) => {
     const deleteUserResult = await deleteUserByIdService(req, res);
     return deleteUserResult;
+}
+
+// Get me 
+export const getMeController = async (req: Request, res: Response) => {
+    try {
+        const userProfile = await getMeService(req);
+
+        return handleSuccess(res, 200, "GET USER PROFILE SUCCESSFULLY", userProfile);
+    } catch (error) {
+        handleControllerError(res, error)
+    }
 }

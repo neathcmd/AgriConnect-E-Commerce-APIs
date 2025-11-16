@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserModel } from "@/models/user-model";
-import { notFoundError, databaseError } from "@/utils/helper/error-helper";
+import { notFoundError, databaseError, unauthorizedError } from "@/utils/helper/error-helper";
 import { IUser } from "@/types/user-type";
 import { handleSuccess } from "@/utils/response-util";
 
@@ -97,6 +97,21 @@ export const deleteUserByIdService = async (req: Request, res: Response) => {
 /**
  * Get me service
  */
-export const getMeService = async () => {
-    // code here
+export const getMeService = async (req: Request) => {
+    try {
+        if (!req.user|| !req.user._id) {
+            throw unauthorizedError("TOKEN NOT FOUND")
+        };
+
+        const userProfile = await UserModel.findById(req.user._id).select("-password");
+
+        if (!userProfile) {
+            throw notFoundError("USER NOT FOUND")
+        };
+
+        return userProfile;
+    } catch (error) {
+        console.error("===FAILED TO GET ME===", error)
+        throw databaseError("FAILED TO GET USER PROFILE");
+    }
 }

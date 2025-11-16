@@ -38,7 +38,7 @@ export const refreshTokenService = async (refreshToken: string) => {
         const tokens = generateTokens({
             _id: user._id.toString(),
             email: user.email,
-            role: user.roles,
+            roles: user.roles,
         });
 
         user.refreshToken = tokens.refreshToken;
@@ -85,7 +85,7 @@ export const registerService = async (data: UserPayload) => {
         const tokens = generateTokens({
             _id: newUser._id.toString(),
             email: newUser.email,
-            role: newUser.roles,
+            roles: newUser.roles,
         });
 
         newUser.refreshToken = tokens.refreshToken;
@@ -125,7 +125,7 @@ export const loginService = async (data: UserPayload) => {
         const tokens = generateTokens({
             _id: existingUser._id.toString(),
             email: existingUser.email,
-            role: existingUser.roles,
+            roles: existingUser.roles,
         });
 
         existingUser.refreshToken = tokens.refreshToken;

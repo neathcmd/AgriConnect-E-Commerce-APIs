@@ -7,7 +7,7 @@ export interface IUser {
     phone: string,
     email: string,
     password: string,
-    roles: UserRole,
+    roles: UserRole[],
 }
 
 export interface UserPayload {
