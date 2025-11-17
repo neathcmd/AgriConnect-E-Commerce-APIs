@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { handleError } from "@/utils/response-util";
+import { UserRoleModel } from "@/models/user-roleModel";
+import { IRoleModel } from "@/models/role-model"; 
 
 export const authorizeRole = (...allowedRoles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -8,17 +10,34 @@ export const authorizeRole = (...allowedRoles: string[]) => {
         return handleError(res, 401, "Unauthorized.");
       }
 
-      // Check if any of the user's roles are in allowed roles
-      const hasRole = req.user.roles.some((roles: string) => allowedRoles.includes(roles));
-      if (!hasRole) {
-        return handleError(res, 403, "Access forbidden.");
+      const userId = req.user._id;
+
+      const joined = await UserRoleModel.find({ user_id: userId })
+        .populate<{
+          role_id: IRoleModel;
+        }>("role_id");
+
+      if (!joined.length) {
+        return handleError(res, 403, "No roles assigned. Access denied.");
+      }
+
+      // Extract names safely
+      const userRoles = joined
+        .map((j) => j.role_id?.name)
+        .filter((name): name is string => Boolean(name));
+
+      const hasAccess = userRoles.some((role) =>
+        allowedRoles.includes(role)
+      );
+
+      if (!hasAccess) {
+        return handleError(res, 403, "Forbidden. Not enough permissions.");
       }
 
       next();
-
     } catch (error) {
       console.error(error);
-      return handleError(res, 500, "Unexpected error occurred");
+      return handleError(res, 500, "Unexpected error");
     }
   };
 };

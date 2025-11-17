@@ -21,7 +21,7 @@ export const generateTokens = (payload: tokenPayload): { accessToken: string; re
         {
             _id: payload._id,
             email: payload.email,
-            roles: payload.roles,
+            // roles: payload.roles,
         },
         ACCESS_TOKEN_SECRET,
         accessTokenOptions
@@ -31,7 +31,7 @@ export const generateTokens = (payload: tokenPayload): { accessToken: string; re
         {
             _id: payload._id,
             email: payload.email,
-            roles: payload.roles,
+            // roles: payload.roles,
         },
         REFRESH_TOKEN_SECRET,
         refreshTokenOptions
