@@ -1,6 +1,6 @@
 import mongoose, { Types, Schema, Document } from "mongoose";
 import { IUser } from "@/types/user-type";
-import { UserRole } from "@/types/user-type";
+// import { UserRole } from "@/types/user-type";
 
 export type UserStatus = "ACTIVE" | "INACTIVE";
 
@@ -9,7 +9,7 @@ export interface IUserModel extends IUser, Document {
   status: UserStatus;
   accessToken: string;
   refreshToken: string;
-  roles: UserRole[];
+  // roles: UserRole[];
    
 }
 
@@ -20,11 +20,11 @@ const userSchema: Schema = new Schema<IUserModel>(
     phone: { type: String, required: true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: true },
-    roles: {
-      type: [String],
-      default: ["CUSTOMER"],
-      required: true
-    },
+    // roles: {
+    //   type: [String],
+    //   default: ["CUSTOMER"],
+    //   required: true
+    // },
     status: {
       type: String,
       enum: ["ACTIVE", "INACTIVE"],

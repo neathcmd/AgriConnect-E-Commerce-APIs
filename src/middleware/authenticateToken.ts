@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-// import jwt, { JwtPayload, TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { handleError } from "@/utils/response-util";
 import { tokenPayload } from "@/types/auth-type";
-import { AuthUser } from "@/types/auth-type";
 
 declare global {
     namespace Express {
@@ -25,41 +23,33 @@ export const authenticateToken = (
       return handleError(res, 401, "Unauthorized");
     }
 
-    const token = authHeader?.split(" ")[1];
+    const token = authHeader.split(" ")[1];
     const secret = process.env.JWT_ACCESS_SECRET;
 
     if (!secret) {
       return handleError(res, 401, "Unauthorized");
     }
 
-    const decoded = jwt.verify(token, secret) as JwtPayload & AuthUser;
+    const decoded = jwt.verify(token, secret) as JwtPayload;
 
-        if (!decoded?._id || !decoded?.email || !decoded.roles) {
-            return handleError(res, 400, "Invalid token");
-        }
+    if (!decoded?._id || !decoded?.email) {
+      return handleError(res, 400, "Invalid token");
+    }
 
-        req.user = {
-            _id: decoded._id,
-            email: decoded.email,
-            roles: decoded.roles,
-        }
+    req.user = {
+      _id: decoded._id,
+      email: decoded.email
+      // No role here
+    };
 
     next();
-    
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-      return handleError(
-        res,
-        401,
-        "Access token expired. Please refresh your token."
-      );
+      return handleError(res, 401, "Access token expired.");
     }
-
     if (error instanceof jwt.JsonWebTokenError) {
-      return handleError(res, 401, "Invalid or malformed token.");
+      return handleError(res, 401, "Invalid token.");
     }
-
-    console.error("Unexpected error:", error);
-    return handleError(res, 500, "Unexpected server error.");
+    return handleError(res, 500, "Unexpected error.");
   }
 };
