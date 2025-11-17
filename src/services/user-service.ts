@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserModel } from "@/models/user-model";
-import { notFoundError, databaseError, unauthorizedError } from "@/utils/helper/error-helper";
+import { notFoundError, unauthorizedError } from "@/utils/helper/error-helper";
 import { IUser } from "@/types/user-type";
 import { handleSuccess } from "@/utils/response-util";
 
@@ -26,7 +26,7 @@ export const getAllUsersService = async () => {
         return fetchUser;
     } catch (error) {
         console.error(error)
-        throw databaseError("SOMETHING WENT WRONG")
+        throw error;
     }
 };
 
@@ -45,7 +45,7 @@ export const getUsersByIdService = async (req: Request, _res: Response) => {
     return user;
   } catch (error) {
     console.error("getUsersByIdService error:", error); 
-    throw databaseError("ERROR FETCHING USER BY ID");
+    throw error;
   }
 };
 
@@ -69,7 +69,7 @@ export const updateUserByIdService = async (req: Request, _res: Response) => {
         return users;
     } catch (error) {
         console.error(error);
-        throw databaseError("ERROR UPDATED DATA.")
+        throw error;
     }
 };
 
@@ -88,8 +88,7 @@ export const deleteUserByIdService = async (req: Request, res: Response) => {
         return handleSuccess(res, 200, "DELETED USER SUCCESSFULLY.")
 
     } catch (error) {
-        console.error(error);
-        throw databaseError("FAILED TO DELETE USER.")
+        throw error;
     }
 };
 
@@ -99,19 +98,19 @@ export const deleteUserByIdService = async (req: Request, res: Response) => {
  */
 export const getMeService = async (req: Request) => {
     try {
-        if (!req.user|| !req.user._id) {
-            throw unauthorizedError("TOKEN NOT FOUND")
-        };
+        if (!req.user || !req.user._id) {
+            throw unauthorizedError("TOKEN NOT FOUND");
+        }
 
         const userProfile = await UserModel.findById(req.user._id).select("-password");
 
         if (!userProfile) {
-            throw notFoundError("USER NOT FOUND")
-        };
+            throw notFoundError("USER NOT FOUND");
+        }
 
         return userProfile;
+
     } catch (error) {
-        console.error("===FAILED TO GET ME===", error)
-        throw databaseError("FAILED TO GET USER PROFILE");
+        throw error;
     }
-}
+};

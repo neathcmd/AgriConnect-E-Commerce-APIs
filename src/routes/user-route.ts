@@ -34,6 +34,6 @@ UserRouter.get("/users",
 
 
 UserRouter.put("/users/:id", updateUserByIdController)
-UserRouter.get("/profile/me", getMeController)
+UserRouter.get("/profile/me", authenticateToken, getMeController)
 
 export default UserRouter;
