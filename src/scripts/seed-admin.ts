@@ -2,8 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import mongoose from "mongoose";
-import { UserModel } from "../models/user-model";
 import bcrypt from "bcrypt";
+import { UserModel } from "../models/user-model";
+import { rolesModel } from "../models/role-model";
+import { UserRoleModel } from "../models/user-roleModel";
 
 const seedAdmin = async () => {
     try {
@@ -18,26 +20,39 @@ const seedAdmin = async () => {
             PHONE_ADMIN
         } = process.env;
 
-        // Check if admin exists
+        // 1. Check if admin user exists
         const existingAdmin = await UserModel.findOne({ email: EMAIL_ADMIN });
         if (existingAdmin) {
             console.log("⚠️ Admin already exists. Skipping seed.");
             process.exit(0);
         }
 
+        // 2. Hash password
         const hashedPassword = await bcrypt.hash(PASSWORD_ADMIN!, 10);
 
-        // Create admin user
-        await UserModel.create({
+        // 3. Create admin user
+        const newAdmin = await UserModel.create({
             full_name: FULL_NAME_ADMIN,
             user_name: USER_NAME_ADMIN,
             email: EMAIL_ADMIN,
             password: hashedPassword,
             phone: PHONE_ADMIN,
-            roles: ["ADMIN"],
         });
 
-        console.log("🎉 Admin user seeded successfully!");
+        // 4. Find admin role
+        const adminRole = await rolesModel.findOne({ name: "ADMIN" });
+        if (!adminRole) {
+            console.log("❌ ADMIN role not found. Make sure roles are seeded first.");
+            process.exit(1);
+        }
+
+        // 5. Insert into user_roles pivot table
+        await UserRoleModel.create({
+            user_id: newAdmin._id,
+            role_id: adminRole._id,
+        });
+
+        console.log("🎉 Admin user seeded successfully with ADMIN role!");
         process.exit(0);
 
     } catch (error) {
