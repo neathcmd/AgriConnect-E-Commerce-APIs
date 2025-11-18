@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { handleError } from "@/utils/response-util";
-import { tokenPayload } from "@/types/auth-type";
+import {  tokenPaylodExtends } from "@/types/auth-type";
 
 declare global {
     namespace Express {
         interface Request {
-            user?: tokenPayload;
+            user?:  tokenPaylodExtends;
         }
     }
 }
@@ -32,14 +32,14 @@ export const authenticateToken = (
 
     const decoded = jwt.verify(token, secret) as JwtPayload;
 
-    if (!decoded?._id || !decoded?.email) {
+    if (!decoded?._id || !decoded?.email || !decoded?.roles) {
       return handleError(res, 400, "Invalid token");
     }
 
     req.user = {
       _id: decoded._id,
-      email: decoded.email
-      // No role here
+      email: decoded.email,
+      roles: (decoded as any).roles || [] 
     };
 
     next();

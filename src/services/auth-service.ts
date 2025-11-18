@@ -11,6 +11,8 @@ import {
     unauthorizedError
 } from "@/utils/helper/error-helper";
 import { clearAuthCookies } from "@/utils/helper/cookies";
+import { UserRoleModel } from "@/models/user-roleModel";
+import { rolesModel } from "@/models/role-model";
 
 type JwtDecoded = { _id: string };
 
@@ -34,11 +36,17 @@ export const refreshTokenService = async (refreshToken: string) => {
             throw unauthorizedError("INVALID REFRESH TOKEN.");
         }
 
+        // Fetch user role
+        const fetchUserRole = await UserRoleModel.find({ user_id: user._id}).populate("role_id")
+
+        // Extract role name
+        const roles = fetchUserRole.map((ur) => ur.role_id.name);
+
         // rotate tokens
         const tokens = generateTokens({
             _id: user._id.toString(),
             email: user.email,
-            // roles: user.roles,
+            roles: roles,
         });
 
         user.refreshToken = tokens.refreshToken;
@@ -82,10 +90,27 @@ export const registerService = async (data: UserPayload) => {
             password: hashed,
         });
 
+        // 2. assign a default role
+        const defaultRole = await rolesModel.findOne({ name: "CUSTOMER" });
+        if (!defaultRole) throw new Error("Default role not found");
+
+        // 3. create record in user_roles
+        await UserRoleModel.create({
+            user_id: newUser._id,
+            role_id: defaultRole._id,
+        });
+
+        // Fetch user role
+        const fetchUserRole = await UserRoleModel.find({ user_id: newUser._id }).populate("role_id");
+
+        // Extract role name
+        const roles = fetchUserRole.map((ur) => ur.role_id.name);
+        console.log("===ROLE===", roles)
+
         const tokens = generateTokens({
             _id: newUser._id.toString(),
             email: newUser.email,
-            // roles: newUser.roles,
+            roles: roles,
         });
 
         newUser.refreshToken = tokens.refreshToken;
@@ -122,10 +147,16 @@ export const loginService = async (data: UserPayload) => {
             throw unauthorizedError("INVALID USERNAME OR PASSWORD.");
         }
 
+        // Fetch user role
+        const fetchUserRole = await UserRoleModel.find({ user_id: existingUser._id}).populate("role_id")
+
+        // Extract role name
+        const roles = fetchUserRole.map((ur) => ur.role_id.name);
+
         const tokens = generateTokens({
             _id: existingUser._id.toString(),
             email: existingUser.email,
-            // roles: existingUser.roles,
+            roles: roles,
         });
 
         existingUser.refreshToken = tokens.refreshToken;

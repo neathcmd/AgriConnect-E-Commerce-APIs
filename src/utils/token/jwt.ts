@@ -1,5 +1,5 @@
 import jwt, { SignOptions } from "jsonwebtoken";
-import { tokenPayload } from "@/types/auth-type";
+import { tokenPaylodExtends } from "@/types/auth-type";
 
 const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_SECRET;
@@ -8,7 +8,7 @@ if (!ACCESS_TOKEN_SECRET || !REFRESH_TOKEN_SECRET) {
     throw new Error("JWT secrets are not defined in environment variables");
 }
 
-export const generateTokens = (payload: tokenPayload): { accessToken: string; refreshToken: string } => {
+export const generateTokens = (payload: tokenPaylodExtends): { accessToken: string; refreshToken: string } => {
     const accessTokenOptions: SignOptions = {
         expiresIn: (process.env.JWT_ACCESS_EXPIRES || "15m") as SignOptions["expiresIn"],
     };
@@ -21,7 +21,7 @@ export const generateTokens = (payload: tokenPayload): { accessToken: string; re
         {
             _id: payload._id,
             email: payload.email,
-            // roles: payload.roles,
+            roles: payload.roles,
         },
         ACCESS_TOKEN_SECRET,
         accessTokenOptions
@@ -31,7 +31,7 @@ export const generateTokens = (payload: tokenPayload): { accessToken: string; re
         {
             _id: payload._id,
             email: payload.email,
-            // roles: payload.roles,
+            roles: payload.roles,
         },
         REFRESH_TOKEN_SECRET,
         refreshTokenOptions

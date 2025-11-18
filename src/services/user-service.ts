@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { UserModel } from "@/models/user-model";
 import { notFoundError, unauthorizedError } from "@/utils/helper/error-helper";
-import { IUser } from "@/types/user-type";
+// import { IUser } from "@/types/user-type";
 import { handleSuccess } from "@/utils/response-util";
+// import { UserRoleModel } from "@/models/user-roleModel";
 
 
 
@@ -16,19 +17,52 @@ export const createUserService = async () => {
 /**
  * Get all users service
  */
-export const getAllUsersService = async () => {
-    try {
-        const fetchUser  = await UserModel.find<IUser>();
-        if (fetchUser.length === 0) {
-            throw notFoundError("USER NOT FOUND.")
-        }
+// export const getAllUsersService = async () => {
+//     try {
+//         const fetchUser  = await UserModel.find<IUser>();
+//         if (fetchUser.length === 0) {
+//             throw notFoundError("USER NOT FOUND.")
+//         }
 
-        return fetchUser;
-    } catch (error) {
-        console.error(error)
-        throw error;
+//         return fetchUser;
+//     } catch (error) {
+//         console.error(error)
+//         throw error;
+//     }
+// };
+
+export const getAllUsersService = async () => {
+  try {
+    // use lean() to get plain JS objects (no Mongoose Document methods like toObject)
+    const users = await UserModel.find().lean();
+    console.log("User===============",users)
+
+    // if (users.length === 0) {
+    //   throw notFoundError("USER NOT FOUND.");
+    // }
+
+    // const results = await Promise.all(
+    //   users.map(async (user) => {
+    //     const userRoles = await UserRoleModel
+    //       .find({ user_id: user._id })
+    //       .populate("Role"); // populate role info
+
+    //     return {
+    //       ...user,
+    //       roles: userRoles.map((r) => r.role_id), // extract the populated role
+    //     };
+    //   })
+    // );
+
+    return {
+        message:"success"
     }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
+
 
 /**
  * Get user by ID service

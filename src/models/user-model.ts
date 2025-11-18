@@ -9,7 +9,7 @@ export interface IUserModel extends IUser, Document {
   status: UserStatus;
   accessToken: string;
   refreshToken: string;
-  // roles: UserRole[];
+  // roles: Types.ObjectId;
    
 }
 
@@ -24,6 +24,11 @@ const userSchema: Schema = new Schema<IUserModel>(
     //   type: [String],
     //   default: ["CUSTOMER"],
     //   required: true
+    // },
+    // roles: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "User_Role",
+    //   // required: true
     // },
     status: {
       type: String,

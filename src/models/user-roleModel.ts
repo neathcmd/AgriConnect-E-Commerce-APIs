@@ -1,7 +1,9 @@
 import mongoose, { Types, Schema, Document } from "mongoose";
 import { IUser_role } from "@/types/role-type";
 
-export interface IUserRoleModel extends IUser_role, Document {}
+export interface IUserRoleModel extends IUser_role, Document {
+  _id: Types.ObjectId
+}
 
 const userRoleSchema = new Schema<IUserRoleModel>(
   {

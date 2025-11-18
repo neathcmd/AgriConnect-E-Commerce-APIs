@@ -11,6 +11,7 @@ import { handleSuccess, handleError } from "@/utils/response-util";
 
 
 export const getAllUsersController = async (_req: Request, res: Response) => {
+    console.log("worked")
     try {
         const userData = await getAllUsersService();
         // console.log(userData)
