@@ -14,8 +14,11 @@ const productSchema = new Schema<IProductModel>(
         // price: { type: Number, required: true },
         price: { type: String, required: true },
         // currency: { type: String, default: "USD" },
-        stock: { type: Number, required: true },
-        category: { type: String, required: true },
+        category: { 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Category", 
+            required: true 
+        },
         status: {
             type: String,
             enum: ["HAS STOCK", "OUT OF STOCK"],
