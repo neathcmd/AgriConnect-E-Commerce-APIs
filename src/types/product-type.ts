@@ -1,18 +1,20 @@
 import {Types} from "mongoose";
 
+
+export type ProductStatus = "HAS STOCK" | "OUT OF STOCK";
 export interface IProduct {
-    name: string;
-    price: Number;
-    currency: string;
+    product_name: string;
+    price: string;
+    // currency: string;
     stock: Number;
     category: string;
-    status: boolean;
+    status: ProductStatus;
     user_id: Types.ObjectId;
 }
 
 export type ProductPayload = {
-    name: string;
+    product_name: string;
     price: string;
     category: string;
-    status: boolean;
+    status: ProductStatus;
 }
