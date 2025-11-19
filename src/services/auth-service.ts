@@ -92,7 +92,7 @@ export const registerService = async (data: UserPayload) => {
 
         // 2. assign a default role
         const defaultRole = await rolesModel.findOne({ name: "CUSTOMER" });
-        if (!defaultRole) throw new Error("Default role not found");
+        if (!defaultRole) throw new Error("DEFAULT ROLE NOT FOUND");
 
         // 3. create record in user_roles
         await UserRoleModel.create({

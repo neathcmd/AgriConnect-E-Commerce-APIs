@@ -1,18 +1,62 @@
 import { Request, Response } from "express";
 import { UserModel } from "@/models/user-model";
-import { notFoundError, unauthorizedError } from "@/utils/helper/error-helper";
+import { badRequestError, notFoundError, unauthorizedError } from "@/utils/helper/error-helper";
 // import { IUser } from "@/types/user-type";
 import { handleSuccess } from "@/utils/response-util";
-// import { UserRoleModel } from "@/models/user-roleModel";
+import { UserRoleModel } from "@/models/user-roleModel";
+import { rolesModel } from "@/models/role-model";
+import bcrypt from "bcrypt";
 
 
 
 /**
  * Create user service
  */
-export const createUserService = async () => {
-    // code here
-}
+export const createUserService = async (req: Request) => {
+    try {
+        const { full_name, user_name, email, phone, password } = req.body;
+
+        // Check duplicate username/email
+        const existing = await UserModel.findOne({
+          $or: [{ user_name }, { email }]
+        });
+        if (existing) {
+          throw badRequestError("USER WITH THIS USERNAME OR EMAIL ALREADY EXIST.");
+        }
+    
+        // Hash password
+        const hashed = await bcrypt.hash(password, 12);
+    
+        // Create user
+        const newUser = await UserModel.create({
+          full_name,
+          user_name,
+          email,
+          phone,
+          password: hashed,
+        });
+    
+        // Assign default role: FARMER
+        const defaultRole = await rolesModel.findOne({ name: "FARMER" });
+        if (!defaultRole) throw new Error("DEFAULT ROLE NOT FOUND");
+    
+        await UserRoleModel.create({
+          user_id: newUser._id,
+          role_id: defaultRole._id,
+        });
+    
+        // Prepare response without password & refreshToken
+        const farmerObj = newUser.toObject();
+        // delete farmerObj.password;
+        // delete farmerObj.refreshToken;
+    
+        return farmerObj;
+
+    } catch (error) {
+        throw error;
+    }
+};
+
 
 /**
  * Get all users service
