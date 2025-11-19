@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { IRoleModel } from "@/models/roleModel";
+import { IRoleModel } from "@/models/role-model";
 
 export type IRole = {
     name: string;

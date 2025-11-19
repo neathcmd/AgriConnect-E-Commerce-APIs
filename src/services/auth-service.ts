@@ -12,7 +12,7 @@ import {
 } from "@/utils/helper/error-helper";
 import { clearAuthCookies } from "@/utils/helper/cookies";
 import { UserRoleModel } from "@/models/user-roleModel";
-import { rolesModel } from "@/models/role-model";
+import { rolesModel, IRoleModel } from "@/models/role-model";
 
 type JwtDecoded = { _id: string };
 
@@ -37,10 +37,10 @@ export const refreshTokenService = async (refreshToken: string) => {
         }
 
         // Fetch user role
-        const fetchUserRole = await UserRoleModel.find({ user_id: user._id}).populate("role_id")
+        const fetchUserRole = await UserRoleModel.find({ user_id: user._id}).populate<{ role_id: IRoleModel }>("role_id");
 
         // Extract role name
-        const roles = fetchUserRole.map((ur) => ur.role_id.name);
+        const roles = fetchUserRole.map((ur) => (ur.role_id).name);
 
         // rotate tokens
         const tokens = generateTokens({
@@ -104,7 +104,7 @@ export const registerService = async (data: UserPayload) => {
         const fetchUserRole = await UserRoleModel.find({ user_id: newUser._id }).populate("role_id");
 
         // Extract role name
-        const roles = fetchUserRole.map((ur) => ur.role_id.name);
+        const roles = fetchUserRole.map((ur) => (ur.role_id as any).name);
         console.log("===ROLE===", roles)
 
         const tokens = generateTokens({
@@ -151,7 +151,7 @@ export const loginService = async (data: UserPayload) => {
         const fetchUserRole = await UserRoleModel.find({ user_id: existingUser._id}).populate("role_id")
 
         // Extract role name
-        const roles = fetchUserRole.map((ur) => ur.role_id.name);
+        const roles = fetchUserRole.map((ur) => (ur.role_id as any).name);
 
         const tokens = generateTokens({
             _id: existingUser._id.toString(),
