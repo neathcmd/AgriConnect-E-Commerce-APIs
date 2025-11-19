@@ -4,11 +4,23 @@ import {
     getUsersByIdService, 
     updateUserByIdService, 
     deleteUserByIdService,
+    createUserService,
     getMeService
 } from "@/services/user-service";
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
-import { handleSuccess, handleError } from "@/utils/response-util";
+import { handleSuccess } from "@/utils/response-util";
 
+
+// create user admin only
+export const createUserController = async (req: Request, res: Response) => {
+    try {
+        const createUser = await createUserService(req);
+
+        return handleSuccess(res, 201, "CREATE FARMER SUCCESSFULLY", createUser)
+    } catch (error) {
+        handleControllerError(res, error)
+    }
+}
 
 export const getAllUsersController = async (_req: Request, res: Response) => {
     console.log("worked")

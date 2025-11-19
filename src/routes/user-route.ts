@@ -4,6 +4,7 @@ import { authorizeRole } from "@/middleware/authorizeRole";
 import { 
     getAllUsersController, 
     updateUserByIdController,
+    createUserController,
     getMeController
 } from "@/controllers/user-controller";
 
@@ -32,6 +33,12 @@ UserRouter.get("/users",
     getAllUsersController
 );
 
+// Create farmer admin only
+UserRouter.post("/farmers", 
+    authenticateToken, 
+    authorizeRole("ADMIN"), 
+    createUserController
+);
 
 UserRouter.put("/users/:id", updateUserByIdController)
 UserRouter.get("/profile/me", authenticateToken, getMeController)
