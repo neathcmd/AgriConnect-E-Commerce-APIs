@@ -74,7 +74,9 @@ export const createUserService = async (req: Request) => {
 //         throw error;
 //     }
 // };
-
+/**
+ * Stuck
+ */
 export const getAllUsersService = async () => {
   try {
     // use lean() to get plain JS objects (no Mongoose Document methods like toObject)
@@ -99,7 +101,7 @@ export const getAllUsersService = async () => {
     // );
 
     return {
-        message:"success"
+      message:"success"
     }
   } catch (error) {
     console.error(error);
