@@ -104,7 +104,7 @@ export const registerService = async (data: UserPayload) => {
         const fetchUserRole = await UserRoleModel.find({ user_id: newUser._id }).populate<{ role_id: IRoleModel }>("role_id");
 
         // Extract role name
-        const roles = fetchUserRole.map((ur) => (ur.role_id as any).name);
+        const roles = fetchUserRole.map((ur) => (ur.role_id as IRoleModel).name);
         console.log("===ROLE===", roles)
 
         const tokens = generateTokens({

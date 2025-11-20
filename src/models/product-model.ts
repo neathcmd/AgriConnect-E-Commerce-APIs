@@ -1,39 +1,52 @@
 import mongoose, { Types, Schema, Document } from "mongoose";
 import { IProduct } from "@/types/product-type";
 
-
-// export type ProductStatus = "ACTIVE" | "INACTIVE";
 export interface IProductModel extends IProduct, Document {
     _id: Types.ObjectId;
-    // status: ProductStatus;
 }
 
 const productSchema = new Schema<IProductModel>(
     {
-        product_name: { type: String, required: true },
-        product_des: { type: String, required: true },
-        // price: { type: Number, required: true },
-        price: { type: String, required: true },
-        // currency: { type: String, default: "USD" },
+        product_name: { 
+            type: String, 
+            required: [true, "Product name is required"],
+            trim: true
+        },
+
+        product_des: { 
+            type: String, 
+            required: [true, "Product description is required"],
+            trim: true
+        },
+
+        price: { 
+            type: String, 
+            required: [true, "Price is required"] 
+        },
+
+        stock: { type: Number },
+
         category: { 
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Category", 
-            required: true 
+            ref: "Category",
+            required: [true, "Category is required"]
         },
+
         status: {
             type: String,
             enum: ["HAS STOCK", "OUT OF STOCK"],
             default: "HAS STOCK",
-            required: true
+            required: true,
         },
-        // status: { type: Boolean, required: true },
-        user_id: { 
-            type: mongoose.Schema.Types.ObjectId, 
-            ref: "User"
+
+        user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: false
         }
-    }, 
+    },
     { 
-        timestamps : true, 
+        timestamps: true 
     }
 );
 
