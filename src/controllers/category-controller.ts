@@ -2,6 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { createCategoryService, getAllCategoriesService } from "@/services/category-service";
 import { handleSuccess } from "@/utils/response-util";
 
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ * @returns 
+ */
 export const createCategoryController = async (
   req: Request,
   res: Response,
@@ -22,6 +29,13 @@ export const createCategoryController = async (
   }
 };
 
+/**
+ * 
+ * @param _req 
+ * @param res 
+ * @param next 
+ * @returns 
+ */
 export const getAllCategoriesController = async (
   _req: Request, // not used, but keep for convention
   res: Response,

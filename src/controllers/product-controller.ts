@@ -3,7 +3,12 @@ import { createProductService } from "@/services/product-service";
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
 import { ProductPayload } from "@/types/product-type";
 
-// Controller
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 export const createProductController = async (req: Request, res: Response) => {
   try {
     // 1️⃣ Get user from auth middleware

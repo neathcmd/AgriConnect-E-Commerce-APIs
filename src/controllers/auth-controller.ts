@@ -6,7 +6,7 @@ import {
   logoutService,
 } from "@/services/auth-service";
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
-import { setAuthCookies } from "@/utils/helper/cookies";
+import { setAuthCookies } from "@/utils/token/cookies";
 
 /**
  * 
