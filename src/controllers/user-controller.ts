@@ -12,6 +12,12 @@ import { handleSuccess } from "@/utils/response-util";
 
 
 // create user admin only
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 export const createUserController = async (req: Request, res: Response) => {
     try {
         const createUser = await createUserService(req);
@@ -35,6 +41,12 @@ export const getAllUsersController = async (_req: Request, res: Response) => {
     }
 }
 
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 export const getUserByIdController = async (req: Request, res: Response) => {
   try {
     const user = await getUsersByIdService(req, res);
@@ -57,12 +69,24 @@ export const updateUserByIdController = async (req: Request, res: Response) => {
 }
 
 // delete user
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 export const deleteUserByIdController = async (req: Request, res: Response) => {
     const deleteUserResult = await deleteUserByIdService(req, res);
     return deleteUserResult;
 }
 
 // Get me 
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 export const getMeController = async (req: Request, res: Response) => {
     try {
         const userProfile = await getMeService(req);

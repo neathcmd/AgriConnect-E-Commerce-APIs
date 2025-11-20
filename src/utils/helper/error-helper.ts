@@ -1,5 +1,10 @@
-import { throwError } from "./throw-error";
-import { AppError } from "../app-error";
+import { ApiErrorType } from "@/types/error-type";
+
+const throwError = (statusCode: number, message: string): ApiErrorType => {
+    const error = new Error(message) as ApiErrorType;
+    error.statusCode = statusCode;
+    return error;
+};
 
 export const badRequestError = (message = "Bad request") => {
     return throwError(400, message);

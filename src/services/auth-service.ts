@@ -10,7 +10,7 @@ import {
     databaseError, 
     unauthorizedError
 } from "@/utils/helper/error-helper";
-import { clearAuthCookies } from "@/utils/helper/cookies";
+import { clearAuthCookies } from "@/utils/token/cookies";
 import { UserRoleModel } from "@/models/user-roleModel";
 import { rolesModel, IRoleModel } from "@/models/role-model";
 
