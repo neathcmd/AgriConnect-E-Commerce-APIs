@@ -15,8 +15,11 @@ export interface IProduct {
 }
 
 export type ProductPayload = {
+    _id: string | Types.ObjectId;
     product_name: string;
+    product_des: string;
     price: string;
+    stock: Number;
     // category: string;
     category: Types.ObjectId;
     status: ProductStatus;
