@@ -10,6 +10,7 @@ import { ProductPayload } from "@/types/product-type";
  * @returns 
  */
 export const createProductController = async (req: Request, res: Response) => {
+  console.log("===work===")
   try {
     // 1️⃣ Get user from auth middleware
     const user = (req as any).user;
