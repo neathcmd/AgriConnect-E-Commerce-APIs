@@ -3,6 +3,7 @@ import AuthRouter from "./auth-route";
 import UserRouter from "./user-route";
 import RoleRouter from "./role-route";
 import CateRouter from "./category-route";
+import ProductRouter from "./product-route";
 
 const router = Router();
 
@@ -14,7 +15,9 @@ router.use("/", UserRouter);
 
 router.use("/", RoleRouter);
 
-router.use("/", CateRouter)
+router.use("/", CateRouter);
+
+router.use("/", ProductRouter);
 
 export default router;
 

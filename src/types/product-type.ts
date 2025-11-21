@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 
-export type ProductStatus = "HAS STOCK" | "OUT OF STOCK";
+export type ProductStatus = "Available" | "Unavailable";
 export interface IProduct {
     product_name: string;
     product_des: string;

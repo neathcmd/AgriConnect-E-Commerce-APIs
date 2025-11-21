@@ -5,7 +5,6 @@ import { ApiErrorType } from "@/types/error-type";
  * Centralized error handler for all routes.
  * Designed for enterprise-level Node.js + TypeScript projects.
  */
-
 export const errorHandler = (
     err: ApiErrorType,
     req: Request,

@@ -1,14 +1,20 @@
 import { Request, Response } from "express";
-// import { handleError } from "@/utils/response-util";
 import { createRoleService } from "@/services/roles-service";
+import { handleControllerError } from "@/utils/helper/controller-error-handler";
+import { handleSuccess } from "@/utils/response-util";
 
 /**
- * Create role
- * @param req 
- * @param res 
- * @returns 
+ * Create role controller
  */
 export const createRoleController = async (req: Request, res: Response) => {
-    const result = await createRoleService(req, res);
-    return result;
-}
+  try {
+    const { name, des } = req.body;
+
+    const result = await createRoleService(name, des);
+
+    return handleSuccess(res, 201, "Create role successfully", result)
+
+  } catch (error) {
+    handleControllerError(res, error)
+  }
+};

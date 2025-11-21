@@ -20,9 +20,9 @@ import { handleSuccess } from "@/utils/response-util";
  */
 export const createUserController = async (req: Request, res: Response) => {
     try {
-        const createUser = await createUserService(req);
+        const createUser = await createUserService(req.body);
 
-        return handleSuccess(res, 201, "CREATE FARMER SUCCESSFULLY", createUser)
+        return handleSuccess(res, 201, "Create user successfully", createUser)
     } catch (error) {
         handleControllerError(res, error)
     }
@@ -33,7 +33,7 @@ export const getAllUsersController = async (_req: Request, res: Response) => {
     try {
         const userData = await getAllUsersService();
         // console.log(userData)
-        return handleSuccess(res, 200, "GET USER SUCCESSFULLY.", userData)
+        return handleSuccess(res, 200, "Get user successfully.", userData)
         
     } catch (error) {
         // console.error(error);
@@ -51,7 +51,7 @@ export const getUserByIdController = async (req: Request, res: Response) => {
   try {
     const user = await getUsersByIdService(req, res);
 
-    return handleSuccess(res, 200, "USER FETCHED SUCCESSFULLY", user)
+    return handleSuccess(res, 200, "Get user successfully", user)
 
   } catch (error) {
     handleControllerError(res, error);
@@ -62,7 +62,7 @@ export const updateUserByIdController = async (req: Request, res: Response) => {
     try {
         const updateUser = await updateUserByIdService(req, res);
 
-        return handleSuccess(res, 200, "USER UPDATED SUCCESSFULLY", updateUser)
+        return handleSuccess(res, 200, "User updated successfully", updateUser)
     } catch (error) {
         handleControllerError(res, error)
     }
@@ -91,7 +91,7 @@ export const getMeController = async (req: Request, res: Response) => {
     try {
         const userProfile = await getMeService(req);
 
-        return handleSuccess(res, 200, "GET USER PROFILE SUCCESSFULLY", userProfile);
+        return handleSuccess(res, 200, "Get user profile successfully", userProfile);
     } catch (error) {
         handleControllerError(res, error)
     }
