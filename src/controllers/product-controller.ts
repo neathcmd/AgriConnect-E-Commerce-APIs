@@ -10,28 +10,27 @@ import { ProductPayload } from "@/types/product-type";
  * @returns 
  */
 export const createProductController = async (req: Request, res: Response) => {
-  console.log("===work===")
   try {
-    // 1️⃣ Get user from auth middleware
+    // Get user from auth middleware
     const user = (req as any).user;
     if (!user || !user._id) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    // 2️⃣ Get product payload from body
+    // Get product payload from body
     const dataPayload: ProductPayload = req.body;
 
-    // 3️⃣ Call service
+    // Call service
     const product = await createProductService(dataPayload, user._id);
 
-    // 4️⃣ Return success
+    // Return success
     return res.status(201).json({
       success: true,
       message: "Product created successfully",
       product,
     });
   } catch (error) {
-    // 5️⃣ Use advanced error handler
+    // Use advanced error handler
     handleControllerError(res, error);
   }
 };

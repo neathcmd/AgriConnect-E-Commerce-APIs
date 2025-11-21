@@ -7,7 +7,7 @@ const ProductRouter = Router();
 
 ProductRouter.post("/products", 
     authenticateToken, 
-    authorizeRole("ADMIN"), 
+    authorizeRole("ADMIN", "FARMER"), 
     createProductController
 );
 

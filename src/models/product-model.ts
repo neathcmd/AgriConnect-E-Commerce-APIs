@@ -34,8 +34,8 @@ const productSchema = new Schema<IProductModel>(
 
         status: {
             type: String,
-            enum: ["HAS STOCK", "OUT OF STOCK"],
-            default: "HAS STOCK",
+            enum: ["Available", "Unavailable"],
+            default: "Available",
             required: true,
         },
 
