@@ -7,7 +7,7 @@ import mongoose from "mongoose";
  * Catches AppError, Mongoose errors, validation, cast, duplicate keys, and unexpected errors.
  */
 export const handleControllerError = (res: Response, error: unknown) => {
-  // 1️⃣ Custom application errors (your AppError)
+  // Custom application errors (your AppError)
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       success: false,
@@ -15,7 +15,7 @@ export const handleControllerError = (res: Response, error: unknown) => {
     });
   }
 
-  // 2️⃣ Mongoose validation errors
+  // Mongoose validation errors
   if (error instanceof mongoose.Error.ValidationError) {
     const messages = Object.values(error.errors).map((err) => (err).message);
     return res.status(400).json({
@@ -25,7 +25,7 @@ export const handleControllerError = (res: Response, error: unknown) => {
     });
   }
 
-  // 3️⃣ Mongoose duplicate key error (e.g., unique index conflict)
+  // Mongoose duplicate key error (e.g., unique index conflict)
   if ((error as any).code === 11000) {
     const fields = Object.keys((error as any).keyValue);
     return res.status(409).json({
@@ -35,7 +35,7 @@ export const handleControllerError = (res: Response, error: unknown) => {
     });
   }
 
-  // 4️⃣ Mongoose cast error (invalid ObjectId)
+  // Mongoose cast error (invalid ObjectId)
   if (error instanceof mongoose.Error.CastError) {
     return res.status(400).json({
       success: false,
@@ -43,7 +43,7 @@ export const handleControllerError = (res: Response, error: unknown) => {
     });
   }
 
-  // 5️⃣ TypeError, ReferenceError, or other runtime JS errors
+  // TypeError, ReferenceError, or other runtime JS errors
   if (error instanceof Error) {
     console.error("RUNTIME ERROR:", error);
     return res.status(500).json({

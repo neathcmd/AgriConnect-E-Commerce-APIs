@@ -15,9 +15,8 @@ import { setAuthCookies } from "@/utils/token/cookies";
  */
 export const registerController = async (req: Request, res: Response) => {
     try {
-        const result = await registerService(req.body);
-        const user = (result as any).user ?? result;
-        const tokens = (result as any).tokens;
+        const { user, roles } = await registerService(req.body);
+        const tokens = (user as any).tokens;
 
         if (tokens) {
             setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
@@ -26,6 +25,7 @@ export const registerController = async (req: Request, res: Response) => {
         res.status(201).json({
             message: "User registered successfully.",
             user,
+            roles
             // ...(tokens ? { accessToken: tokens.accessToken } : {}),
         });
     } catch (err) {
@@ -40,14 +40,15 @@ export const registerController = async (req: Request, res: Response) => {
  */
 export const loginController = async (req: Request, res: Response) => {
     try {
-        const { user, tokens } = await loginService(req.body);
+        const { user, tokens, roles } = await loginService(req.body);
 
         setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
 
         res.status(200).json({
             message: "Login successful.",
-            user,
             accessToken: tokens.accessToken,
+            user,
+            roles,
         });
     } catch (err) {
       handleControllerError(res, err);

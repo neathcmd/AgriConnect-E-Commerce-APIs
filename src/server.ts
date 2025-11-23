@@ -40,6 +40,7 @@ app.use((_req, _res, next) => {
 app.use(errorHandler);
 
 // === Connect to DB and start server ===
+// console.log("connecting...")
 connectDB()
   .then(() => console.log("✅ Database connected"))
   .catch((err) => console.error("❌ Database connection failed:", err));
