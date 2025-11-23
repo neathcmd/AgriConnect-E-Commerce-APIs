@@ -109,7 +109,7 @@ export const registerService = async (data: UserPayload) => {
     // delete userObj.password;
     // delete userObj.refreshToken;
 
-    return { user: userObj };
+    return { user: userObj, roles: roles };
 };
 
 
@@ -145,13 +145,16 @@ export const loginService = async (data: UserPayload) => {
     existingUser.refreshToken = tokens.refreshToken;
 
     const savedUser = await existingUser.save();
-    // const userObj = savedUser.toObject();
+    const userObj = savedUser.toObject();
     // delete userObj.password;
     // delete userObj.refreshToken;
 
+    // Role formatter
+
     return {
         tokens,
-        user: savedUser,
+        user: userObj,
+        roles: roles
     };
 };
 

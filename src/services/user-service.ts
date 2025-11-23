@@ -4,7 +4,7 @@ import { badRequestError, notFoundError, unauthorizedError } from "@/utils/helpe
 // import { IUser } from "@/types/user-type";
 import { handleSuccess } from "@/utils/response-util";
 import { UserRoleModel } from "@/models/user-roleModel";
-import { rolesModel } from "@/models/role-model";
+import { IRoleModel, rolesModel } from "@/models/role-model";
 import bcrypt from "bcrypt";
 import { UserPayload } from "@/types/user-type";
 
@@ -57,45 +57,58 @@ export const createUserService = async (dataPayload: UserPayload) => {
 /**
  * Get all users service
  */
-// export const getAllUsersService = async () => {
-//     try {
-//         const fetchUser  = await UserModel.find<IUser>();
-//         if (fetchUser.length === 0) {
-//             throw notFoundError("USER NOT FOUND.")
-//         }
-
-//         return fetchUser;
-//     } catch (error) {
-//         console.error(error)
-//         throw error;
-//     }
-// };
-/**
- * Stuck
- */
 export const getAllUsersService = async () => {
+  const users = await UserModel.aggregate([
+    // Join users with user_roles
+    {
+      $lookup: {
+        from: "user_roles",
+        localField: "_id",
+        foreignField: "user_id",
+        as: "userRoles"
+      }
+    },
 
-  // use lean() to get plain JS objects (no Mongoose Document methods like toObject)
-  const users = await UserModel.find().lean();
-  console.log("User===============",users)
-  // if (users.length === 0) {
-  //   throw notFoundError("USER NOT FOUND.");
-  // }
-  // const results = await Promise.all(
-  //   users.map(async (user) => {
-  //     const userRoles = await UserRoleModel
-  //       .find({ user_id: user._id })
-  //       .populate("Role"); // populate role info
-  //     return {
-  //       ...user,
-  //       roles: userRoles.map((r) => r.role_id), // extract the populated role
-  //     };
-  //   })
-  // );
-  return {
-    message:"success"
+    // Join user_roles with roles
+    {
+      $lookup: {
+        from: "roles",
+        localField: "userRoles.role_id",
+        foreignField: "_id",
+        as: "roles"
+      }
+    },
+    // convert role object to an array display only role name
+    {
+      $addFields: {
+        roles: {
+          $map: {
+            input: "$roles",
+            as: "r",
+            in: "$$r.name"
+          }
+        }
+      }
+    },
+
+    // Remove sensitive fields
+    {
+      $project: {
+        password: 0,
+        refreshToken: 0,
+        __v: 0,
+        userRoles: 0,
+      }
+    }
+  ]);
+
+  if (!users || users.length === 0) {
+    throw notFoundError("User not found.");
   }
+
+  return users;
 };
+
 
 
 /**
