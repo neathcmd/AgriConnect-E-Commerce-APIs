@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const product_controller_1 = require("@/controllers/product-controller");
+const authenticateToken_1 = require("@/middleware/authenticateToken");
+const authorizeRole_1 = require("@/middleware/authorizeRole");
+const ProductRouter = (0, express_1.Router)();
+ProductRouter.post("/products", authenticateToken_1.authenticateToken, (0, authorizeRole_1.authorizeRole)("ADMIN", "FARMER"), product_controller_1.createProductController);
+ProductRouter.get("/products", authenticateToken_1.authenticateToken, (0, authorizeRole_1.authorizeRole)("ADMIN", "FARMER"), product_controller_1.getAllProductController);
+exports.default = ProductRouter;

@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { createProductService } from "@/services/product-service";
+import { createProductService, getAllProductService } from "@/services/product-service";
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
 import { ProductPayload } from "@/types/product-type";
+import { handleSuccess } from "@/utils/response-util";
 
 /**
  * 
@@ -34,3 +35,14 @@ export const createProductController = async (req: Request, res: Response) => {
     handleControllerError(res, error);
   }
 };
+
+// Get all product
+export const getAllProductController = async (_req: Request, res: Response) => {
+  try {
+    const AllProducts = await getAllProductService();
+
+    return handleSuccess(res, 200, "Get products successfully.", AllProducts);
+  } catch (error) {
+    handleControllerError(res, error )
+  }
+}
