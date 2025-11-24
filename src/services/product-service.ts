@@ -52,8 +52,8 @@ export const createProductService = async (dataPayload: ProductPayload, user_id:
 /**
  * Get all product and get product by Id
  */
-const getAllProductService = async () => {
-    const products = await ProductModel.find().lean();
+export const getAllProductService = async () => {
+    const products = await ProductModel.find().populate("category", "name").lean();
 
     if (products.length === 0) {
         throw notFoundError("No products found.");
