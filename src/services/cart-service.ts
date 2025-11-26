@@ -3,19 +3,33 @@ import { cartModel } from "@/models/cart-model";
 import { ProductModel } from "@/models/product-model";
 import { notFoundError, badRequestError } from "@/utils/helper/error-helper";
 
-/**
- * Get cart service
- */
-export const getCartService = async ( userId: string ) => {
-    const cart = await cartModel.findOne({ userId }).populate("Product.productId").lean();
-    return cart;
-};
+
+
 
 /**
+ * 
+ * Get cart service
+ * @param userId 
+ * @returns 
+ */
+export const getCartService = async (userId: string) => {
+    const carts = await cartModel.findOne({ userId}).populate("products.productId").lean();
+    return carts;
+}
+
+/**
+ * 
  * add to cart service
+ * @param userId 
+ * @param productId 
+ * @param quantity 
+ * @returns 
  */
 export const addToCartService = async (userId: string, productId: string, quantity: number) => {
-    if (quantity <= 0) throw badRequestError("Quantity must be at least 1");
+    // if user try to add 0 it will throw 400 error
+    if (quantity <= 0) {
+        throw badRequestError("Quantity must be at least 1");
+    }
 
     // ensure product exists
     const product = await ProductModel.findById(productId).lean();
@@ -31,4 +45,13 @@ export const addToCartService = async (userId: string, productId: string, quanti
     }
 
     // find product in cart
+    const itemIndex = cart.products.findIndex((p: any) => p.productId.toString() === productId);
+    if (itemIndex > -1) {
+        cart.products[itemIndex].quantity += quantity;
+    } else {
+        cart.products.push({ productId: new Types.ObjectId(productId), quantity: quantity});
+    };
+
+    await cart.save();
+    return cart;
 }
