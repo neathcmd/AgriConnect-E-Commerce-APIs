@@ -3,9 +3,6 @@ import { cartModel } from "@/models/cart-model";
 import { ProductModel } from "@/models/product-model";
 import { notFoundError, badRequestError } from "@/utils/helper/error-helper";
 
-
-
-
 /**
  * 
  * Get cart service
@@ -51,6 +48,19 @@ export const addToCartService = async (userId: string, productId: string, quanti
     } else {
         cart.products.push({ productId: new Types.ObjectId(productId), quantity: quantity});
     };
+
+    await cart.save();
+    return cart;
+};
+
+// remove from cart
+export const removeFromCartService = async (userId: string, productId: string) => {
+    const cart = await cartModel.findOne({ userId });
+    if (!cart) {
+        throw notFoundError("Cart not found.")
+    };
+    
+    cart.set("products",cart.products.filter((p: any) => p.productId.toString() !== productId));
 
     await cart.save();
     return cart;
