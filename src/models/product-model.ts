@@ -9,19 +9,19 @@ const productSchema = new Schema<IProductModel>(
     {
         product_name: { 
             type: String, 
-            required: [true, "Product name is required"],
+            required: true,
             trim: true
         },
 
         product_des: { 
             type: String, 
-            required: [true, "Product description is required"],
+            required: true,
             trim: true
         },
 
         price: { 
             type: String, 
-            required: [true, "Price is required"] 
+            required: true, 
         },
 
         stock: { type: Number },
@@ -29,7 +29,7 @@ const productSchema = new Schema<IProductModel>(
         category: { 
             type: mongoose.Schema.Types.ObjectId,
             ref: "Category",
-            required: [true, "Category is required"]
+            required: true,
         },
 
         status: {
