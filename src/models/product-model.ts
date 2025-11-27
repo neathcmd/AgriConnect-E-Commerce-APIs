@@ -20,7 +20,7 @@ const productSchema = new Schema<IProductModel>(
         },
 
         price: { 
-            type: String, 
+            type: Number, 
             required: true, 
         },
 
