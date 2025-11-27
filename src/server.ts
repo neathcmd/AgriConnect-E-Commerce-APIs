@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import connectDB from "@/config/db";
 import Router from "@/routes/index";
-import { errorHandler } from "@/middleware/errorHandler";
+// import { errorHandler } from "@/middleware/errorHandler";
 import { setupSwagger } from "@/config/swagger";
 
 const app = express();
@@ -37,7 +37,7 @@ app.use((_req, _res, next) => {
 });
 
 // === Error-handling middleware (must be LAST) ===
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // === Connect to DB and start server ===
 // console.log("connecting...")

@@ -19,7 +19,7 @@ export const getCartController = async (req: Request, res: Response) => {
         handleControllerError(res, error)
         // next(error);
     }
-}
+};
 
 // add to cart
 export const addToCartController = async (req: Request, res: Response) => {
@@ -35,6 +35,23 @@ export const addToCartController = async (req: Request, res: Response) => {
         const cart = await addToCartService(userId, productId, quantity || 1);
 
         return handleSuccess(res, 200, "Add to cart successfully", cart);
+    } catch (error) {
+        handleControllerError(res, error);
+    }
+};
+
+// remove from cart
+export const removeFromCartController = async (req: Request, res: Response) => {
+    try {
+        if (!req.user) {
+            return handleError(res, 401, "Unauthorized");
+        }
+
+        const userId = req.user._id;
+        const { productId } = req.params;
+        const cart = await removeFromCartService(userId, productId);
+
+        return handleSuccess(res, 200, "Remove from cart successfully", cart);
     } catch (error) {
         handleControllerError(res, error);
     }

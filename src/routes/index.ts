@@ -4,6 +4,7 @@ import UserRouter from "./user-route";
 import RoleRouter from "./role-route";
 import CateRouter from "./category-route";
 import ProductRouter from "./product-route";
+import cartRouter from "./cart-route";
 
 const router = Router();
 
@@ -18,6 +19,8 @@ router.use("/", RoleRouter);
 router.use("/", CateRouter);
 
 router.use("/", ProductRouter);
+
+router.use("/", cartRouter);
 
 export default router;
 

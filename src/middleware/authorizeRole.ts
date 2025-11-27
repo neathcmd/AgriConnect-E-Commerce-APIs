@@ -23,8 +23,8 @@ export const authorizeRole = (...allowedRoles: string[]) => {
         .map((j) => j.role_id.name)
         .filter((name): name is string => Boolean(name));
 
-      const hasAccess = userRoles.some((role) =>
-        allowedRoles.includes(role)
+      const hasAccess = userRoles.some((roles) =>
+        allowedRoles.includes(roles)
       );
 
       if (!hasAccess) {
