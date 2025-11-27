@@ -5,7 +5,7 @@ export type ProductStatus = "Available" | "Unavailable";
 export interface IProduct {
     product_name: string;
     product_des: string;
-    price: string;
+    price: Number;
     // currency: string;
     stock: Number;
     // category: string;
