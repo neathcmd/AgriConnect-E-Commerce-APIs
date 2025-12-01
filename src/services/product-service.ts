@@ -60,5 +60,37 @@ export const getAllProductService = async () => {
     };
 
     return products;
-}
+};
 
+// get product by id
+export const getProductByIdService = async (productId: string) => {
+    const productData = await ProductModel.findById(productId).populate("category", "name").lean();
+
+    if (!productData) {
+        throw notFoundError("Product not found.");
+    };
+
+    return productData;
+};
+
+// update product by id
+export const updateProductByIdService = async (productId: string, dataPayload: ProductPayload) => {
+    const updatedProduct = await ProductModel.findByIdAndUpdate(productId, dataPayload, { new: true, runValidators: true });
+
+    if (!updatedProduct) {
+        throw notFoundError("Product not found.");
+    };
+
+    return updatedProduct;
+};
+
+// delete product
+export const deleteProductByIdService = async (productId: string) => {
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId);
+
+    if (!deletedProduct) {
+        throw notFoundError("Product not found.");
+    };
+
+    return deletedProduct;
+}

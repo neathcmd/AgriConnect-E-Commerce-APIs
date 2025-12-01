@@ -1,56 +1,78 @@
-import { Request, Response, NextFunction } from "express";
-import { createCategoryService, getAllCategoriesService } from "@/services/category-service";
-import { handleSuccess } from "@/utils/response-util";
+import { Request, Response, NextFunction } from "express"
+import { createCategoryService, getAllCategoriesService, getCategoryByIdService, deleteCategoryService } from "@/services/category-service"
+import { handleSuccess } from "@/utils/response-util"
+import { handleControllerError } from "@/utils/helper/controller-error-handler"
 
 /**
- * 
+ * Controller to create a new category
  * @param req 
  * @param res 
- * @param next 
  * @returns 
  */
-export const createCategoryController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const createCategoryController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, des } = req.body;
 
-    const newCategory = await createCategoryService(name, des);
+    const createdCategory = await createCategoryService(name, des);
 
-    return res.status(201).json({
-      message: "Category created successfully.",
-      data: newCategory,
-    });
-    
+    return handleSuccess(res, 201, "Category created successfully", createdCategory);
+
   } catch (error) {
-    next(error); // Let error middleware handle it
+    handleControllerError(res, error);
   }
-};
+}
 
 /**
- * 
- * @param _req 
- * @param res 
- * @param next 
+ * Controller to get all categories
+ * @param _req
+ * @param res
+ * @returns
+ */
+export const getAllCategoriesController = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const categoriesList = await getAllCategoriesService();
+
+    return handleSuccess(res, 200, "Categories retrieved successfully", categoriesList);
+
+  } catch (error) {
+    handleControllerError(res, error);
+  }
+}
+
+/**
+ * Controller to get a category by ID
+ * @param req 
+ * @param res
  * @returns 
  */
-export const getAllCategoriesController = async (
-  _req: Request, // not used, but keep for convention
-  res: Response,
-  next: NextFunction
-) => {
+export const getCategoryByIdController = async (req: Request, res: Response) => {
   try {
-    const allCategories = await getAllCategoriesService();
+    const { id } = req.params;
 
-    return handleSuccess(
-      res,
-      200,
-      "Categories retrieved successfully",
-      allCategories
-    );
+    const foundCategory = await getCategoryByIdService(id);
+
+    return handleSuccess(res, 200, "Category retrieved successfully", foundCategory);
+
   } catch (error) {
-    next(error);
+    handleControllerError(res, error);
   }
-};
+}
+
+/**
+ * Controller to delete a category by ID
+ * @param req 
+ * @param res
+ * @returns
+ */
+export const deleteCategoryController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const deletedCategory = await deleteCategoryService(id);
+
+    return handleSuccess(res, 200, "Category deleted successfully", deletedCategory);
+
+  } catch (error) {
+    handleControllerError(res, error);
+  }
+}
