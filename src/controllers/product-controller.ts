@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createProductService, getAllProductService, getProductByIdService, updateProductByIdService, deletedProductByIdService } from "@/services/product-service";
+import { createProductService, getAllProductService, getProductByIdService, updateProductByIdService, deleteProductByIdService } from "@/services/product-service";
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
 import { ProductPayload } from "@/types/product-type";
 import { handleSuccess } from "@/utils/response-util";
@@ -77,7 +77,7 @@ export const updateProductByIdController = async (req: Request, res: Response) =
 export const deleteProductByIdController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const deletedProduct = await deletedProductByIdService(id);
+    const deletedProduct = await deleteProductByIdService(id);
 
     return handleSuccess(res, 200, "Product deleted successfully.");
   } catch (error) {

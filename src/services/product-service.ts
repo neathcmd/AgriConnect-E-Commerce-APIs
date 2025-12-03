@@ -18,17 +18,17 @@ export const createProductService = async (dataPayload: ProductPayload, user_id:
     
     const { product_name, product_des, price, category, status } = dataPayload;
     if (!product_name?.trim() || !product_des?.trim() || !category) {
-        throw badRequestError("These field are requried.")
+        throw badRequestError("These field are required.")
     };
 
-    // quries role from the database
+    // queries role from the database
     const queryRole = await UserRoleModel.find({ user_id: user_id}).populate<{ role_id: IRoleModel }>("role_id");
     
     // Check if it has farmer role
-    const hasPremission = queryRole.some(
+    const hasPermission = queryRole.some(
     (ur) => ["FARMER", "ADMIN"].includes((ur.role_id as IRoleModel).name)
     );
-    if (!hasPremission) {
+    if (!hasPermission) {
         throw badRequestError("Only farmer and admin are able to post product.")
     };
 
