@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createProductService, getAllProductService } from "@/services/product-service";
+import { createProductService, getAllProductService, getProductByIdService, updateProductByIdService, deleteProductByIdService } from "@/services/product-service";
 import { handleControllerError } from "@/utils/helper/controller-error-handler";
 import { ProductPayload } from "@/types/product-type";
 import { handleSuccess } from "@/utils/response-util";
@@ -45,4 +45,42 @@ export const getAllProductController = async (_req: Request, res: Response) => {
   } catch (error) {
     handleControllerError(res, error )
   }
-}
+};
+
+export const getProductByIdController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const productData = await getProductByIdService(id);
+
+    return handleSuccess(res, 200, "Get product successfully.", productData);
+  } catch (error) {
+    handleControllerError(res, error);
+  }
+};
+
+// update product by Id 
+export const updateProductByIdController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const dataPayload: ProductPayload = req.body;
+
+    const updatedProduct = await updateProductByIdService(id, dataPayload);
+
+    return handleSuccess(res, 200, "Product updated successfully.", updatedProduct);
+  } catch (error) {
+    handleControllerError(res, error);
+  }
+};
+
+// delete product by Id
+export const deleteProductByIdController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deletedProduct = await deleteProductByIdService(id);
+
+    return handleSuccess(res, 200, "Product deleted successfully.");
+  } catch (error) {
+    handleControllerError(res, error);
+  }
+};

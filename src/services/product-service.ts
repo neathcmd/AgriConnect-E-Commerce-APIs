@@ -18,17 +18,17 @@ export const createProductService = async (dataPayload: ProductPayload, user_id:
     
     const { product_name, product_des, price, category, status } = dataPayload;
     if (!product_name?.trim() || !product_des?.trim() || !category) {
-        throw badRequestError("These field are requried.")
+        throw badRequestError("These field are required.")
     };
 
-    // quries role from the database
+    // queries role from the database
     const queryRole = await UserRoleModel.find({ user_id: user_id}).populate<{ role_id: IRoleModel }>("role_id");
     
     // Check if it has farmer role
-    const hasPremission = queryRole.some(
+    const hasPermission = queryRole.some(
     (ur) => ["FARMER", "ADMIN"].includes((ur.role_id as IRoleModel).name)
     );
-    if (!hasPremission) {
+    if (!hasPermission) {
         throw badRequestError("Only farmer and admin are able to post product.")
     };
 
@@ -60,5 +60,37 @@ export const getAllProductService = async () => {
     };
 
     return products;
-}
+};
 
+// get product by id
+export const getProductByIdService = async (productId: string) => {
+    const productData = await ProductModel.findById(productId).populate("category", "name").lean();
+
+    if (!productData) {
+        throw notFoundError("Product not found.");
+    };
+
+    return productData;
+};
+
+// update product by id
+export const updateProductByIdService = async (productId: string, dataPayload: ProductPayload) => {
+    const updatedProduct = await ProductModel.findByIdAndUpdate(productId, dataPayload, { new: true, runValidators: true });
+
+    if (!updatedProduct) {
+        throw notFoundError("Product not found.");
+    };
+
+    return updatedProduct;
+};
+
+// delete product
+export const deleteProductByIdService = async (productId: string) => {
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId);
+
+    if (!deletedProduct) {
+        throw notFoundError("Product not found.");
+    };
+
+    return deletedProduct;
+}
