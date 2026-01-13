@@ -28,6 +28,12 @@ export const createUserController = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * 
+ * @param _req 
+ * @param res 
+ * @returns 
+ */
 export const getAllUsersController = async (_req: Request, res: Response) => {
     try {
         const userData = await getAllUsersService();
