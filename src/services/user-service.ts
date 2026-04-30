@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
 import { UserModel } from "@/models/user-model";
-import { badRequestError, notFoundError, unauthorizedError } from "@/utils/helper/error-helper";
+import {
+  badRequestError,
+  notFoundError,
+  unauthorizedError,
+} from "@/utils/helper/error-helper";
 // import { IUser } from "@/types/user-type";
 import { handleSuccess } from "@/utils/response-util";
 import { UserRoleModel } from "@/models/user-roleModel";
 import { IRoleModel, rolesModel } from "@/models/role-model";
 import bcrypt from "bcrypt";
 import { UserPayload } from "@/types/user-type";
-
-
 
 /**
  * Create user service
@@ -18,7 +20,7 @@ export const createUserService = async (dataPayload: UserPayload) => {
 
   // Check duplicate username/email
   const existing = await UserModel.findOne({
-    $or: [{ user_name }, { email }]
+    $or: [{ user_name }, { email }],
   });
 
   if (existing) {
@@ -45,14 +47,13 @@ export const createUserService = async (dataPayload: UserPayload) => {
     user_id: newUser._id,
     role_id: defaultRole._id,
   });
-  
+
   // Prepare response without password & refreshToken
   const farmerObj = newUser.toObject();
   // delete farmerObj.password;
   // delete farmerObj.refreshToken;
   return farmerObj;
 };
-
 
 /**
  * Get all users service
@@ -65,8 +66,8 @@ export const getAllUsersService = async () => {
         from: "user_roles",
         localField: "_id",
         foreignField: "user_id",
-        as: "userRoles"
-      }
+        as: "userRoles",
+      },
     },
 
     // Join user_roles with roles
@@ -75,8 +76,8 @@ export const getAllUsersService = async () => {
         from: "roles",
         localField: "userRoles.role_id",
         foreignField: "_id",
-        as: "roles"
-      }
+        as: "roles",
+      },
     },
     // convert role object to an array display only role name
     {
@@ -85,10 +86,10 @@ export const getAllUsersService = async () => {
           $map: {
             input: "$roles",
             as: "r",
-            in: "$$r.name"
-          }
-        }
-      }
+            in: "$$r.name",
+          },
+        },
+      },
     },
 
     // Remove sensitive fields
@@ -98,8 +99,8 @@ export const getAllUsersService = async () => {
         refreshToken: 0,
         __v: 0,
         userRoles: 0,
-      }
-    }
+      },
+    },
   ]);
 
   if (!users || users.length === 0) {
@@ -109,76 +110,68 @@ export const getAllUsersService = async () => {
   return users;
 };
 
-
-
 /**
  * Get user by ID service
  */
 export const getUsersByIdService = async (req: Request, _res: Response) => {
+  const { id } = req.params;
+  const user = await UserModel.findById(id);
 
-    const { id } = req.params;
-    const user = await UserModel.findById(id);
+  if (!user) {
+    throw notFoundError("User not found.");
+  }
 
-    if (!user) {
-      throw notFoundError("User not found.");
-    }
-
-    return user;
-
+  return user;
 };
 
 /**
  * Update user by ID
  */
 export const updateUserByIdService = async (req: Request, _res: Response) => {
-
   const { id } = req.params;
 
   const updatedData = req.body;
 
-  const users = await UserModel.findByIdAndUpdate( id, updatedData, {
+  const users = await UserModel.findByIdAndUpdate(id, updatedData, {
     new: true,
     runValidators: true,
   });
 
   if (!users) {
-    throw notFoundError("User not found")
-  };
+    throw notFoundError("User not found");
+  }
 
   return users;
-
 };
 
 /**
  * Delete user by Id
  */
 export const deleteUserByIdService = async (req: Request, res: Response) => {
-
   const { id } = req.params;
-  const deleteUser = await UserModel.findByIdAndDelete( id )
+  const deleteUser = await UserModel.findByIdAndDelete(id);
 
   if (!deleteUser) {
-    throw notFoundError("User not found..")
+    throw notFoundError("User not found..");
   }
 
-  return handleSuccess(res, 200, "Delete user successfully.")
-}
-
+  return handleSuccess(res, 200, "Delete user successfully.");
+};
 
 /**
  * Get me service
  */
 export const getMeService = async (req: Request) => {
-
   if (!req.user || !req.user._id) {
     throw unauthorizedError("Token not found.");
   }
-  
-  const userProfile = await UserModel.findById(req.user._id).select("-password")
+
+  const userProfile = await UserModel.findById(req.user._id).select(
+    "-password",
+  );
   if (!userProfile) {
     throw notFoundError("User not found.");
   }
-  
-  return userProfile;
 
+  return userProfile;
 };
